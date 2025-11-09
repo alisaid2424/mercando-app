@@ -1,10 +1,14 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { Routes } from "./constants/enums";
-import { UserRole } from "@prisma/client";
 import clerkClient from "@clerk/clerk-sdk-node";
 
 const isProtected = createRouteMatcher(["/admin(.*)"]);
+
+const UserRole = {
+  ADMIN: "ADMIN",
+  USER: "USER",
+} as const;
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
