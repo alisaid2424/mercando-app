@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  clerkUserId   String         @unique
+  password      String?
+  name          String?
+  image         String?
+  phone         String?
+  streetAddress String?
+  postalCode    String?
+  city          String?
+  country       String?
+  role          UserRole       @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  carts         Cart[]
+  orders        Order[]        @relation("UserOrders")
+  OrderProduct  OrderProduct[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  images      String[]
+  rate        Int      @default(1)
+  order       Int      @default(autoincrement())
+  price       Float
+  offerPrice  Float
+  stock       Int      @default(3)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  carts       Cart[]
+
+  orders     OrderProduct[]
+  category   Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  order       Int       @default(autoincrement())
+  products    Product[]
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  quantity  Int
+  amount    Float
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  amount        Float
+  userName      String
+  email         String
+  phone         String?
+  streetAddress String?
+  postalCode    String?
+  city          String?
+  country       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationship to User (foreign key + cascade delete)
+  userId String
+  user   User   @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
+
+  products OrderProduct[]
+}
+
+model OrderProduct {
+  id       String @id @default(cuid())
+  quantity Int
+
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  user      User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
