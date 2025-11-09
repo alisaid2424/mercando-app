@@ -27,7 +27,7 @@ export const USERS_PER_PAGE = 3;
 export const PRODUCTS_PER_PAGE = 3;
 export const ORDERS_PER_PAGE = 3;
 
-const PRODUCTION_DOMAIN = "";
+const PRODUCTION_DOMAIN = "https://mercando-app-vg58.vercel.app";
 
 const DEVELOPMENT_DOMAIN = "http://localhost:3000";
 
