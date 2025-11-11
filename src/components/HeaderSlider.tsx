@@ -58,13 +58,13 @@ const HeaderSlider = () => {
         {sliderData.map((slide, index) => (
           <div key={slide.id} className="w-screen flex-shrink-0 py-6">
             <div className="container max-w-7xl">
-              <div className="bg-[#E6E9F2] rounded-xl flex flex-col-reverse md:flex-row items-center justify-between px-5 md:px-14 py-8 ">
+              <div className="bg-[#E6E9F2] max-md:h-[475px] rounded-xl flex flex-col-reverse md:flex-row items-center justify-between px-5 md:px-14 py-8 ">
                 {/* Text Section */}
                 <div className="md:pl-8 mt-10 md:mt-0 max-w-xl">
                   <p className="md:text-base text-primary pb-1">
                     {slide.offer}
                   </p>
-                  <h1 className="text-2xl md:text-[40px] md:leading-[48px] font-semibold max-sm:min-h-[110px]">
+                  <h1 className="text-2xl md:text-[40px] md:leading-[48px] font-semibold max-md:min-h-[110px]">
                     {slide.title}
                   </h1>
                   <div className="flex items-center mt-4 md:mt-6 gap-4 flex-wrap">
@@ -86,13 +86,13 @@ const HeaderSlider = () => {
                 </div>
 
                 {/* Image Section */}
-                <div className="flex items-center flex-1 justify-center">
+                <div className="relative flex items-center justify-center flex-1 md:w-72 w-48 h-48 md:h-72 overflow-hidden">
                   <Image
-                    className="object-contain md:w-72 w-48 h-48 md:h-72"
                     src={slide.imgSrc}
                     alt={`Slide ${index + 1}`}
                     width={300}
                     height={300}
+                    className="object-contain max-w-full max-h-full"
                   />
                 </div>
               </div>

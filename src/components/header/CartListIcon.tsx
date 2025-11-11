@@ -12,7 +12,7 @@ type Props = {
 const CartListIcon = ({ onSetOpen, cartitems }: Props) => {
   return (
     <div
-      className="h-[400px] w-[350px] bg-gray-100 z-10 rounded-md border shadow-sm absolute mx-10 right-2 sm:right-20 
+      className="h-[400px] w-[350px] bg-gray-100 z-10 rounded-md border shadow-sm absolute mx-10 -right-8 sm:right-20 
       md:right-24
     lg:right-20 xl:right-28 top-16 p-5 overflow-auto"
     >
