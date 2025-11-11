@@ -37,7 +37,7 @@ const CartButton = () => {
         onClick={() => setOpenCartList((prev) => !prev)}
         className="flex relative outline-none bg-transparent"
       >
-        <ShoppingCartIcon className="text-3xl font-bold" />
+        <ShoppingCartIcon className="text-3xl font-bold text-gray-500" />
 
         {quantity > 0 && (
           <span
