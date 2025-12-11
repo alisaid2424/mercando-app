@@ -10,10 +10,11 @@ export enum Routes {
 }
 
 export enum Pages {
-  LOGIN = "/signin",
+  LOGIN = "/sign-in",
   Register = "/signup",
   SHOP = "/all-products",
   CATEGORIES = "/categories",
+  FAVORITES = "/favorites",
   ABOUT = "/about",
   CONTACT = "/contact",
   CART = "/cart",

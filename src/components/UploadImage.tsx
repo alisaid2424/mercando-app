@@ -37,8 +37,8 @@ const UploadImage = <T extends FieldValues>({
     typeof currentImage === "string"
       ? [currentImage]
       : Array.isArray(currentImage)
-      ? currentImage
-      : [];
+        ? currentImage
+        : [];
 
   const [files, setFiles] = useState<(string | File | undefined)[]>(
     multiple ? Array(maxFiles).fill(undefined) : [undefined]

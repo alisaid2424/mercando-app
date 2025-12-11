@@ -1,7 +1,14 @@
 "use client";
 
 import { Pages, Routes } from "@/constants/enums";
-import { Gift, HomeIcon, Search, ShoppingCart, User } from "lucide-react";
+import {
+  Gift,
+  HeartPlus,
+  HomeIcon,
+  Search,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
@@ -24,7 +31,8 @@ const Navbar = () => {
   const links = [
     { title: "Home", href: Routes.ROOT },
     { title: "Shop", href: Pages.SHOP },
-    { title: "About Us", href: Pages.ABOUT },
+    { title: "Favorite", href: Pages.FAVORITES },
+    { title: "About", href: Pages.ABOUT },
     { title: "Contact", href: Pages.CONTACT },
   ];
 
@@ -68,6 +76,14 @@ const Navbar = () => {
             label="Products"
             labelIcon={<Gift className="w-4 h-4 text-gray-600" />}
             onClick={() => router.push(Pages.SHOP)}
+          />
+        )}
+
+        {isMobile && (
+          <UserButton.Action
+            label="Favorites"
+            labelIcon={<HeartPlus className="w-4 h-4 text-gray-600" />}
+            onClick={() => router.push(Pages.FAVORITES)}
           />
         )}
 

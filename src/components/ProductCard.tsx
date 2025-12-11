@@ -1,15 +1,26 @@
 import { formatCurrency } from "@/lib/formatters";
-import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import StarRateing from "@/components/StarRating";
 import { Product } from "@prisma/client";
+import { clerkClient } from "@clerk/clerk-sdk-node";
+import { auth } from "@clerk/nextjs/server";
+import AddToFavoriteButton from "./AddToFavoriteButton";
 
 interface ProductCardProps {
   product: Product;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = async ({ product }: ProductCardProps) => {
+  const { userId } = await auth();
+  let isFavorite = false;
+
+  if (userId) {
+    const user = await clerkClient.users.getUser(userId);
+    const favorites = (user.privateMetadata?.favorites as string[]) || [];
+    isFavorite = favorites.includes(product.id);
+  }
+
   return (
     <Link
       href={`/product/${product.id}`}
@@ -24,9 +35,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           width={800}
           height={800}
         />
-        <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
-          <Heart className="w-3 h-3 text-gray-700" />
-        </button>
+
+        <AddToFavoriteButton
+          productId={product.id}
+          initialFavorite={isFavorite}
+        />
       </div>
 
       <p className="md:text-base font-medium pt-2 w-full truncate">

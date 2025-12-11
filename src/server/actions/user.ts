@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { Prisma, User } from "@prisma/client";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import { revalidatePath } from "next/cache";
-import { Routes } from "@/constants/enums";
+import { Pages, Routes } from "@/constants/enums";
 
 export async function createUser(data: User) {
   try {
@@ -87,6 +87,48 @@ export async function deleteUser(clerkUserId: string) {
     return {
       status: 200,
       message: "User deleted successfully",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      message: "internal server error",
+    };
+  }
+}
+
+export async function updateFavoriteUser(productId: string, userId: string) {
+  try {
+    const user = await clerkClient.users.getUser(userId);
+
+    let favorites = (user.privateMetadata?.favorites as string[]) ?? [];
+
+    if (!Array.isArray(favorites)) {
+      favorites = [];
+    }
+
+    // Toggle logic
+    if (!favorites.includes(productId)) {
+      favorites.push(productId);
+    } else {
+      favorites = favorites.filter((id) => id !== productId);
+    }
+
+    await clerkClient.users.updateUserMetadata(userId, {
+      privateMetadata: {
+        ...user.privateMetadata,
+        favorites,
+      },
+    });
+
+    revalidatePath(Routes.ROOT);
+    revalidatePath(Pages.SHOP);
+    revalidatePath(Pages.FAVORITES);
+
+    return {
+      status: 200,
+      message: "Favorite products updated",
+      favorites,
     };
   } catch (error) {
     console.error(error);
