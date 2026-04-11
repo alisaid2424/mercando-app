@@ -36,12 +36,12 @@ export const categoryAction = async (data: CategoryFormType) => {
     typeof formData.image === "string"
       ? formData.image
       : formData.image instanceof File && formData.image.size > 0
-      ? await getImageUrl({
-          imageFile: formData.image,
-          publicId: formData.image.name,
-          pathName: "categories_mercando",
-        })
-      : undefined;
+        ? await getImageUrl({
+            imageFile: formData.image,
+            publicId: formData.image.name,
+            pathName: "categories_mercando",
+          })
+        : undefined;
 
   try {
     if (!formData.id) {
@@ -100,7 +100,7 @@ export const categoryAction = async (data: CategoryFormType) => {
       const targets = error.meta?.target as string[];
 
       const errorObject = Object.fromEntries(
-        targets.map((field) => [field, `${field} must be unique.`])
+        targets.map((field) => [field, `${field} must be unique.`]),
       );
 
       return {
@@ -133,14 +133,13 @@ export const deleteCategory = async (id: string) => {
     revalidatePath(Pages.SHOP);
 
     return {
-      status: 200,
+      success: true,
       message: "Category deleted successfull",
     };
   } catch (error) {
-    console.error(error);
     return {
-      status: 500,
-      message: "internal server error",
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error",
     };
   }
 };

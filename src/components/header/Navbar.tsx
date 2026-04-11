@@ -98,7 +98,19 @@ const Navbar = () => {
 
   // Sub-component for the sign-in button
   const SignInButton = () => (
-    <Button onClick={() => openSignIn()} variant="outline" className="btn-user">
+    <Button
+      onClick={() =>
+        openSignIn({
+          appearance: {
+            elements: {
+              modalContent: "mx-auto my-auto",
+            },
+          },
+        })
+      }
+      variant="outline"
+      className="btn-user"
+    >
       <User className="w-4 h-4" />
     </Button>
   );

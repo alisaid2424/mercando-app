@@ -71,7 +71,7 @@ export async function deleteUser(clerkUserId: string) {
 
     if (!existingUser) {
       return {
-        status: 200,
+        success: false,
         message: "User already deleted from DB.",
       };
     }
@@ -85,14 +85,13 @@ export async function deleteUser(clerkUserId: string) {
     revalidatePath(Routes.ROOT);
 
     return {
-      status: 200,
+      success: true,
       message: "User deleted successfully",
     };
   } catch (error) {
-    console.error(error);
     return {
-      status: 500,
-      message: "internal server error",
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error",
     };
   }
 }

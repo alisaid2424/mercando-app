@@ -1,6 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { confirmDelete } from "@/lib/swal";
 import { deleteProduct } from "@/server/actions/product";
 import { Trash2 } from "lucide-react";
 
@@ -16,52 +18,44 @@ const DeleteProductButton = ({
 
   const handleDelete = async () => {
     try {
-      if (confirm("Are you sure you want to delete this Product?")) {
-        const res = await deleteProduct(productId);
+      const confirmed = await confirmDelete(
+        "Delete Product?",
+        "Are you sure you want to delete this product?",
+      );
 
-        if (res.status && res.message) {
-          if (res.status === 200) {
-            toast({
-              title: "Success! 🎉",
-              description: res.message,
-              className: "bg-green-100 text-green-600",
-            });
+      if (!confirmed) return;
 
-            if (onSuccess) {
-              onSuccess();
-            }
-          } else {
-            toast({
-              title: "Error",
-              description: res.message,
-              className: "bg-red-100 text-red-600",
-            });
-          }
-        } else {
-          toast({
-            title: "Error",
-            description: "Unexpected response from server.",
-            className: "bg-red-100 text-red-600",
-          });
-        }
+      const res = await deleteProduct(productId);
+
+      if (res.success) {
+        toast({
+          title: "Success! 🎉",
+          description: res.message,
+          className: "bg-green-100 text-green-600",
+        });
+
+        onSuccess?.();
+      } else {
+        toast({
+          title: "Error",
+          description: res.message,
+          className: "bg-red-100 text-red-600",
+        });
       }
     } catch (error) {
-      console.error(error);
       toast({
         title: "Error",
-        description: "An error occurred while deleting the product.",
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
         className: "bg-red-100 text-red-600",
       });
     }
   };
 
   return (
-    <div
-      onClick={handleDelete}
-      className="bg-red-600 text-white p-2 hover:bg-red-800 transition-all duration-300 rounded-lg inline-block cursor-pointer"
-    >
+    <Button onClick={handleDelete} variant="destructive" size="icon">
       <Trash2 size={20} />
-    </div>
+    </Button>
   );
 };
 

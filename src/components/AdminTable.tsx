@@ -204,7 +204,7 @@ const AdminTable: FC<AdminTableProps> = ({
                             ) : (
                               <Link
                                 href={`/admin/${type}/${item.id}`}
-                                className="bg-blue-600 text-white rounded-lg p-2 hover:bg-primary transition-all duration-300 inline-block"
+                                className="bg-blue-600 text-white rounded-lg p-2 hover:bg-blue-700 transition-all duration-300 inline-block"
                               >
                                 <List size={20} />
                               </Link>

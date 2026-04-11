@@ -19,7 +19,13 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
   //Reusable function to handle adding a product to the cart
   const addProductToCart = async (redirectToCart: boolean = false) => {
     if (!user) {
-      openSignIn();
+      openSignIn({
+        appearance: {
+          elements: {
+            modalContent: "mx-auto my-auto",
+          },
+        },
+      });
       return;
     }
 
@@ -28,7 +34,7 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
         clerkUserId: user.id,
         productId: product.id,
         quantity: 1,
-      })
+      }),
     );
 
     // If the request failed, show an error toast

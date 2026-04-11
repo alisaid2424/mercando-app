@@ -92,14 +92,13 @@ export const deleteOrder = async (id: string) => {
     revalidatePath(Routes.ROOT);
 
     return {
-      status: 200,
+      success: true,
       message: "Order deleted successfull",
     };
   } catch (error) {
-    console.error(error);
     return {
-      status: 500,
-      message: "internal server error",
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error",
     };
   }
 };

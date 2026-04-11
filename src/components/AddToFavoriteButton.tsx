@@ -25,13 +25,19 @@ const AddToFavoriteButton = ({
   }, [initialFavorite]);
 
   const handleAddToFavoriteButton = async (
-    e: React.MouseEvent<HTMLButtonElement>
+    e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
     e.stopPropagation();
     try {
       if (!user) {
-        openSignIn();
+        openSignIn({
+          appearance: {
+            elements: {
+              modalContent: "mx-auto my-auto",
+            },
+          },
+        });
         return;
       }
 

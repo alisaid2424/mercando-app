@@ -15,7 +15,7 @@ import { getImageUrl } from "./getImageUrl";
 // craete or update product
 export const productAction = async (
   data: CreateProductType | UpdateProductType,
-  mode: "create" | "update"
+  mode: "create" | "update",
 ) => {
   const result =
     mode === "create"
@@ -58,7 +58,7 @@ export const productAction = async (
         });
         if (res) imageUrls[index] = res;
       }
-    })
+    }),
   );
 
   try {
@@ -137,7 +137,7 @@ export const productAction = async (
     ) {
       const targets = error.meta?.target as string[];
       const errorObject = Object.fromEntries(
-        targets.map((field) => [field, `${field} must be unique.`])
+        targets.map((field) => [field, `${field} must be unique.`]),
       );
       return {
         status: 400,
@@ -167,14 +167,13 @@ export const deleteProduct = async (id: string) => {
     revalidatePath(Routes.ROOT);
 
     return {
-      status: 200,
+      success: true,
       message: "Product deleted successfull",
     };
   } catch (error) {
-    console.error(error);
     return {
-      status: 500,
-      message: "internal server error",
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error",
     };
   }
 };
