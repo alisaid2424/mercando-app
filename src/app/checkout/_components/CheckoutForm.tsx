@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { DOMAIN } from "@/constants/enums";
 import { useToast } from "@/hooks/use-toast";
 import { createNewOrder } from "@/server/actions/order";
@@ -212,19 +213,19 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
         <PaymentElement />
       </div>
 
-      <button
+      <Button
         type="submit"
         disabled={isPending}
-        className="w-full mt-5 bg-primary text-white rounded-md py-3 text-lg hover:bg-orange-500 transition-colors"
+        className="w-full mt-5 !py-6 text-lg "
       >
         {isPending ? (
-          <div className="element-center">
+          <div className="element-center gap-3">
             Loading... <LoaderCircle className="animate-spin mx-auto" />
           </div>
         ) : (
           "Submit"
         )}
-      </button>
+      </Button>
     </form>
   );
 };
