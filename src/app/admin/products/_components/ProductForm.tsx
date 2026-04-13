@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product, Category } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransition } from "react";
 import { z } from "zod";
 import {
   CreateProductSchema,
@@ -29,7 +29,7 @@ interface ProductFormProps {
 const ProductForm = ({ product, categories }: ProductFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const ratingOptions = Array.from({ length: 7 }, (_, i) => ({
     id: `${i + 1}`,
     name: `${i + 1} Star${i >= 1 ? "s" : ""}`,
@@ -68,53 +68,50 @@ const ProductForm = ({ product, categories }: ProductFormProps) => {
     handleSubmit,
   } = form;
 
-  const submitForm = async (data: SchemaType) => {
-    if (isLoading) return;
+  const submitForm = (data: SchemaType) => {
+    startTransition(async () => {
+      try {
+        const res = await productAction(data, isUpdate ? "update" : "create");
 
-    try {
-      setIsLoading(true);
-
-      const res = await productAction(data, isUpdate ? "update" : "create");
-
-      if (res.status === 200 || res.status === 201) {
-        toast({
-          title: "Success! 🎉",
-          description: res.message,
-          className: "bg-green-100 text-green-600",
-        });
-
-        router.push(`${Routes.PRODUCTS}?pageNumber=1`);
-      } else if (res.status === 400 && res.error) {
-        Object.entries(res.error).forEach(([field, message]) => {
-          setError(field as keyof SchemaType, {
-            type: "server",
-            message,
+        if (res.status === 200 || res.status === 201) {
+          toast({
+            title: "Success! 🎉",
+            description: res.message,
+            className: "bg-green-100 text-green-600",
           });
-        });
 
-        toast({
-          title: "Form Errors",
-          description: "Please fix the highlighted fields.",
-          className: "bg-red-100 text-red-600",
-        });
-      } else {
+          router.push(`${Routes.PRODUCTS}?pageNumber=1`);
+        } else if (res.status === 400 && res.error) {
+          Object.entries(res.error).forEach(([field, message]) => {
+            setError(field as keyof SchemaType, {
+              type: "server",
+              message,
+            });
+          });
+
+          toast({
+            title: "Form Errors",
+            description: "Please fix the highlighted fields.",
+            className: "bg-red-100 text-red-600",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: res.message,
+            className: "bg-red-100 text-red-600",
+          });
+        }
+      } catch (error) {
         toast({
           title: "Error",
-          description: res.message,
+          description:
+            error instanceof Error
+              ? error.message
+              : "Unexpected error occurred",
           className: "bg-red-100 text-red-600",
         });
       }
-    } catch (error) {
-      console.error(error);
-
-      toast({
-        title: "Error",
-        description: "Unexpected error occurred",
-        className: "bg-red-100 text-red-600",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -200,8 +197,8 @@ const ProductForm = ({ product, categories }: ProductFormProps) => {
               </div>
             </div>
 
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
                 <LoaderCircle className="animate-spin" />
               ) : isUpdate ? (
                 "Update Product"

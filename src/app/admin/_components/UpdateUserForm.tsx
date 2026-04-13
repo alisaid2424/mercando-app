@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { User, UserRole } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
@@ -23,7 +23,7 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
   const pathName = usePathname();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [isAdmin, setIsAdmin] = useState(user.role === UserRole.ADMIN);
 
   const form = useForm<UpdateUserType>({
@@ -48,47 +48,48 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     handleSubmit,
   } = form;
 
-  const submitForm = async (data: UpdateUserType) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-
-      const res = await fetch("/api/user/update", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          targetUserId: user.clerkUserId,
-          ...data,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (res.ok && result.message) {
-        toast({
-          title: "Success! 🎉",
-          description: result.message,
-          className: "bg-green-100 text-green-600",
+  const submitForm = (data: UpdateUserType) => {
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/user/update", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            targetUserId: user.clerkUserId,
+            ...data,
+          }),
         });
 
-        if (pathName === Routes.ADMIN) {
-          router.push(Routes.ADMIN);
+        const result = await res.json();
+
+        if (res.ok && result.message) {
+          toast({
+            title: "Success! 🎉",
+            description: result.message,
+            className: "bg-green-100 text-green-600",
+          });
+
+          if (pathName === Routes.ADMIN) {
+            router.push(Routes.ADMIN);
+          } else {
+            router.push(`${Routes.USERS}?pageNumber=1`);
+          }
         } else {
-          router.push(`${Routes.USERS}?pageNumber=1`);
+          toast({
+            title: "Error",
+            description: result.message || "Something went wrong",
+            className: "bg-red-100 text-red-600",
+          });
         }
-      } else {
+      } catch (error) {
         toast({
           title: "Error",
-          description: result.message || "Something went wrong",
+          description:
+            error instanceof Error ? error.message : "Something went wrong",
           className: "bg-red-100 text-red-600",
         });
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -157,9 +158,11 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
             onCheckedChange={(checked) => setIsAdmin(checked)}
           />
 
-          <Button type="submit" title="Save" disabled={isLoading}>
-            {isLoading ? (
-              <LoaderCircle className="animate-spin" />
+          <Button type="submit" title="Save" disabled={isPending}>
+            {isPending ? (
+              <>
+                Updated... <LoaderCircle className="animate-spin" />
+              </>
             ) : (
               "Update User"
             )}

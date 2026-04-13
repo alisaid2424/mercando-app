@@ -12,7 +12,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useTransition } from "react";
 
 interface CheckoutFormProps {
   amount: number;
@@ -25,89 +25,89 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
   const cart = useAppSelector(selectCartItems);
   const stripe = useStripe();
   const elements = useElements();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;
 
-    try {
-      setLoading(true);
+    startTransition(async () => {
+      try {
+        // Validate form
+        const { error: submitError } = await elements.submit();
+        if (submitError) {
+          console.error(submitError.message);
+          return;
+        }
 
-      // Validate form
-      const { error: submitError } = await elements.submit();
-      if (submitError) {
-        console.error(submitError.message);
-        return;
-      }
+        // Create payment intent
+        const res = await fetch(`${DOMAIN}/api/create-intent`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount }),
+        });
 
-      // Create payment intent
-      const res = await fetch(`${DOMAIN}/api/create-intent`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount }),
-      });
+        const responseData = await res.json();
 
-      const responseData = await res.json();
+        let orderRes: Order | null = null;
 
-      let orderRes: Order | null = null;
+        if (!res.ok || !responseData.clientSecret) {
+          console.error("Failed to create payment intent:", responseData.error);
+          toast({
+            title: "Error",
+            description: "Payment creation failed. Try again later.",
+            className: "bg-red-100 text-red-600",
+          });
 
-      if (!res.ok || !responseData.clientSecret) {
-        console.error("Failed to create payment intent:", responseData.error);
+          return;
+        } else {
+          // create order
+          orderRes = (await createOrder()) as Order;
+
+          if (!orderRes) return;
+
+          //send email
+          await sendEmail(orderRes);
+          toast({
+            title: "Success! 🎉",
+            description: "Payment successful and order created and send email",
+            className: "bg-green-100 text-green-600",
+          });
+        }
+
+        const clientSecret = responseData.clientSecret;
+
+        // Confirm payment
+        const result = await stripe.confirmPayment({
+          clientSecret,
+          elements,
+          confirmParams: {
+            return_url: `${DOMAIN}/payment-confirm?orderId=${orderRes.id}`,
+          },
+        });
+
+        if (result.error) {
+          console.error("Payment error:", result.error.message);
+          toast({
+            title: "Error",
+            description: result.error.message,
+            className: "bg-red-100 text-red-600",
+          });
+
+          return;
+        }
+      } catch (error) {
         toast({
           title: "Error",
-          description: "Payment creation failed. Try again later.",
+          description:
+            error instanceof Error
+              ? error.message
+              : "Unexpected error occurred",
           className: "bg-red-100 text-red-600",
         });
-
-        return;
-      } else {
-        // create order
-        orderRes = (await createOrder()) as Order;
-
-        if (!orderRes) return;
-
-        //send email
-        await sendEmail(orderRes);
-        toast({
-          title: "Success! 🎉",
-          description: "Payment successful and order created and send email",
-          className: "bg-green-100 text-green-600",
-        });
       }
-
-      const clientSecret = responseData.clientSecret;
-
-      // Confirm payment
-      const result = await stripe.confirmPayment({
-        clientSecret,
-        elements,
-        confirmParams: {
-          return_url: `${DOMAIN}/payment-confirm?orderId=${orderRes.id}`,
-        },
-      });
-
-      if (result.error) {
-        console.error("Payment error:", result.error.message);
-        toast({
-          title: "Error",
-          description: result.error.message,
-          className: "bg-red-100 text-red-600",
-        });
-
-        return;
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-      toast({
-        title: "Error",
-        description: "Unexpected error occurred",
-        className: "bg-red-100 text-red-600",
-      });
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const createOrder = async () => {
@@ -159,7 +159,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
                 return dispatch(removeCartItem(item.id));
               }
             })
-            .filter(Boolean)
+            .filter(Boolean),
         );
 
         toast({
@@ -214,10 +214,16 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={isPending}
         className="w-full mt-5 bg-primary text-white rounded-md py-3 text-lg hover:bg-orange-500 transition-colors"
       >
-        {loading ? <LoaderCircle className="animate-spin mx-auto" /> : "Submit"}
+        {isPending ? (
+          <div className="element-center">
+            Loading... <LoaderCircle className="animate-spin mx-auto" />
+          </div>
+        ) : (
+          "Submit"
+        )}
       </button>
     </form>
   );

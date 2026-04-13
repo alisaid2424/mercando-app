@@ -101,9 +101,7 @@ const AdminTable: FC<AdminTableProps> = ({
                             column.key === "createdAt" ||
                             column.key === "updatedAt"
                               ? "hidden lg:table-cell"
-                              : column.key === "image"
-                                ? "hidden sm:table-cell"
-                                : ""
+                              : ""
                           }`}
                         >
                           {column.name}

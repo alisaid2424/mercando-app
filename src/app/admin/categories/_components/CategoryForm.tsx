@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
-import { useState } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { CategoryFormType, CategorySchema } from "@/zod-schemas/category";
@@ -23,7 +23,7 @@ interface CategoryFormProps {
 const CategoryForm = ({ category }: CategoryFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const defaultValues: CategoryFormType = {
     id: category?.id ?? undefined,
@@ -44,51 +44,48 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
     handleSubmit,
   } = form;
 
-  const submitForm = async (data: CategoryFormType) => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
+  const submitForm = (data: CategoryFormType) => {
+    startTransition(async () => {
+      try {
+        const res = await categoryAction(data);
 
-      const res = await categoryAction(data);
-
-      if (res.status && res.message) {
-        if (res.status === 200 || res.status === 201) {
-          toast({
-            title: "Success! 🎉",
-            description: res.message,
-            className: "bg-green-100 text-green-600",
-          });
-          router.push(`${Routes.CATEGORIES}?pageNumber=1`);
-        } else if (res.status === 400 && res.error) {
-          Object.entries(res.error).forEach(([field, message]) => {
-            form.setError(field as keyof CategoryFormType, {
-              type: "server",
-              message,
+        if (res.status && res.message) {
+          if (res.status === 200 || res.status === 201) {
+            toast({
+              title: "Success! 🎉",
+              description: res.message,
+              className: "bg-green-100 text-green-600",
             });
-          });
-          toast({
-            title: "Form Errors",
-            description: "Please fix the highlighted fields.",
-            className: "bg-red-100 text-red-600",
-          });
-        } else {
-          toast({
-            title: "Error",
-            description: res.message,
-            className: "bg-red-100 text-red-600",
-          });
+            router.push(`${Routes.CATEGORIES}?pageNumber=1`);
+          } else if (res.status === 400 && res.error) {
+            Object.entries(res.error).forEach(([field, message]) => {
+              form.setError(field as keyof CategoryFormType, {
+                type: "server",
+                message,
+              });
+            });
+            toast({
+              title: "Form Errors",
+              description: "Please fix the highlighted fields.",
+              className: "bg-red-100 text-red-600",
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: res.message,
+              className: "bg-red-100 text-red-600",
+            });
+          }
         }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description:
+            error instanceof Error ? error.message : "Something went wrong",
+          className: "bg-red-100 text-red-600",
+        });
       }
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: "Error",
-        description: "Something went wrong",
-        className: "bg-red-100 text-red-600",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -124,8 +121,8 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
               placeholder="Enter Description"
             />
 
-            <Button type="submit" title="Save" disabled={isLoading}>
-              {isLoading ? (
+            <Button type="submit" title="Save" disabled={isPending}>
+              {isPending ? (
                 <LoaderCircle className="animate-spin" />
               ) : (
                 `${category ? "Edit Category" : "Create Category"}`

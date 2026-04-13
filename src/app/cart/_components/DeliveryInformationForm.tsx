@@ -11,7 +11,7 @@ import { selectCartItems } from "@/store/cart/cartSlice";
 import { useAppSelector } from "@/store/hook";
 import { DeliveryInfoSchema, DeliveryInfoType } from "@/zod-schemas/user";
 import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@prisma/client";
@@ -25,7 +25,7 @@ const DeliveryInformationForm = ({ user }: DeliveryInfoProps) => {
   const { toast } = useToast();
   const items = useAppSelector(selectCartItems);
   const totalAmount = getTotalAmount(items);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<DeliveryInfoType>({
     mode: "onBlur",
@@ -39,44 +39,45 @@ const DeliveryInformationForm = ({ user }: DeliveryInfoProps) => {
     },
   });
 
-  const submitForm = async (data: DeliveryInfoType) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-
-      const res = await fetch("/api/user/update", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          targetUserId: user?.clerkUserId,
-          ...data,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (res.ok && result.message) {
-        toast({
-          title: "Success! 🎉",
-          description:
-            "Your delivery information has been saved successfully! Redirecting you to checkout...",
-          className: "bg-green-100 text-green-600",
+  const submitForm = (data: DeliveryInfoType) => {
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/user/update", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            targetUserId: user?.clerkUserId,
+            ...data,
+          }),
         });
 
-        router.push(`/checkout?amount=${totalAmount.toFixed(2)}`);
-      } else {
+        const result = await res.json();
+
+        if (res.ok && result.message) {
+          toast({
+            title: "Success! 🎉",
+            description:
+              "Your delivery information has been saved successfully! Redirecting you to checkout...",
+            className: "bg-green-100 text-green-600",
+          });
+
+          router.push(`/checkout?amount=${totalAmount.toFixed(2)}`);
+        } else {
+          toast({
+            title: "Error",
+            description: result.message || "Something went wrong",
+            className: "bg-red-100 text-red-600",
+          });
+        }
+      } catch (error) {
         toast({
           title: "Error",
-          description: result.message || "Something went wrong",
+          description:
+            error instanceof Error ? error.message : "Unexpected error",
           className: "bg-red-100 text-red-600",
         });
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -136,10 +137,10 @@ const DeliveryInformationForm = ({ user }: DeliveryInfoProps) => {
               <Button
                 type="submit"
                 title="Save"
-                disabled={isLoading}
+                disabled={isPending}
                 className="h-10"
               >
-                {isLoading ? (
+                {isPending ? (
                   <LoaderCircle className="animate-spin" />
                 ) : (
                   `Pay ${formatCurrency(totalAmount)}`
