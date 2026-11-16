@@ -133,7 +133,7 @@ export async function PATCH(req: Request) {
         message: "User updated successfully",
         user: updatedUser,
       }),
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err) {
     console.error("Update error:", err);

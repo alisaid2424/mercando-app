@@ -5,24 +5,17 @@ import { useToast } from "@/hooks/use-toast";
 import { updateFavoriteUser } from "@/server/actions/user";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
 
 const AddToFavoriteButton = ({
   productId,
-  initialFavorite,
+  isFavorite,
 }: {
   productId: string;
-  initialFavorite: boolean;
+  isFavorite: boolean;
 }) => {
   const { user } = useUser();
   const { toast } = useToast();
   const { openSignIn } = useClerk();
-
-  const [isFavorite, setIsFavorite] = useState(initialFavorite);
-
-  useEffect(() => {
-    setIsFavorite(initialFavorite);
-  }, [initialFavorite]);
 
   const handleAddToFavoriteButton = async (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -41,10 +34,9 @@ const AddToFavoriteButton = ({
         return;
       }
 
-      const res = await updateFavoriteUser(productId, user.id);
+      const res = await updateFavoriteUser(productId);
 
       if (res.status === 200) {
-        setIsFavorite((res.favorites ?? []).includes(productId));
         toast({
           title: "Success! 🎉",
           description: res.message,

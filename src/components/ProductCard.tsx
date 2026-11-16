@@ -3,24 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import StarRateing from "@/components/StarRating";
 import { Product } from "@prisma/client";
-import { clerkClient } from "@clerk/clerk-sdk-node";
-import { auth } from "@clerk/nextjs/server";
 import AddToFavoriteButton from "./AddToFavoriteButton";
 
 interface ProductCardProps {
   product: Product;
+  isFavorite: boolean;
 }
 
-const ProductCard = async ({ product }: ProductCardProps) => {
-  const { userId } = await auth();
-  let isFavorite = false;
-
-  if (userId) {
-    const user = await clerkClient.users.getUser(userId);
-    const favorites = (user.privateMetadata?.favorites as string[]) || [];
-    isFavorite = favorites.includes(product.id);
-  }
-
+const ProductCard = async ({
+  product,
+  isFavorite = false,
+}: ProductCardProps) => {
   return (
     <Link
       href={`/product/${product.id}`}
@@ -36,10 +29,7 @@ const ProductCard = async ({ product }: ProductCardProps) => {
           height={800}
         />
 
-        <AddToFavoriteButton
-          productId={product.id}
-          initialFavorite={isFavorite}
-        />
+        <AddToFavoriteButton productId={product.id} isFavorite={isFavorite} />
       </div>
 
       <p className="md:text-base font-medium pt-2 w-full truncate">

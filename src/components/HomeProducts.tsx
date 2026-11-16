@@ -3,17 +3,24 @@ import { Pages } from "@/constants/enums";
 import ProductCard from "./ProductCard";
 import LottieHandler from "@/lib/LottieHandler";
 import { getBestSellers } from "@/server/db/products";
+import { getUserFavoriteIds } from "@/server/db/favorite";
 
 const HomeProducts = async () => {
   const Products = await getBestSellers(10);
+  const userFavoriteIds = await getUserFavoriteIds();
+
   return (
     <div className="container max-w-7xl element-center flex-col pt-14">
       <p className="text-2xl font-medium text-left w-full">Popular products</p>
       {Products.length ? (
         <>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-6 pb-14 w-full">
-            {Products.map((product, index) => (
-              <ProductCard key={index} product={product} />
+            {Products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isFavorite={userFavoriteIds.includes(product.id)}
+              />
             ))}
           </div>
           <Link

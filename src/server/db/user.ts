@@ -1,7 +1,6 @@
 import { USERS_PER_PAGE } from "@/constants/enums";
 import { cache } from "@/lib/cache";
 import prisma from "@/lib/db";
-import clerkClient from "@clerk/clerk-sdk-node";
 
 export const getUsers = cache(
   async (pageNumber: number) => {
@@ -14,7 +13,7 @@ export const getUsers = cache(
     return users;
   },
   ["users"],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 );
 
 export const getUser = cache(
@@ -24,29 +23,34 @@ export const getUser = cache(
     return await prisma.user.findUnique({ where: query });
   },
   [`user-${crypto.randomUUID()}`],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 );
 
 export const getUserFavorites = cache(
-  async (userId: string) => {
-    const user = await clerkClient.users.getUser(userId);
+  async (clerkUserId: string) => {
+    const dbUser = await prisma.user.findUnique({
+      where: { clerkUserId },
+      select: { id: true },
+    });
 
-    const favorites = Array.isArray(user?.privateMetadata?.favorites)
-      ? (user.privateMetadata.favorites as string[])
-      : [];
+    if (!dbUser) {
+      return [];
+    }
 
-    if (!favorites.length) return [];
-
-    const products = await prisma.product.findMany({
+    const favorites = await prisma.favorite.findMany({
       where: {
-        id: {
-          in: favorites,
-        },
+        userId: dbUser.id,
+      },
+      include: {
+        product: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
-    return products;
+    return favorites.map((fav) => fav.product);
   },
   ["get-user-favorites"],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 );

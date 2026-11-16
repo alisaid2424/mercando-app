@@ -5,6 +5,7 @@ import { Prisma, User } from "@prisma/client";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import { revalidatePath } from "next/cache";
 import { Pages, Routes } from "@/constants/enums";
+import { auth } from "@clerk/nextjs/server";
 
 export async function createUser(data: User) {
   try {
@@ -96,29 +97,52 @@ export async function deleteUser(clerkUserId: string) {
   }
 }
 
-export async function updateFavoriteUser(productId: string, userId: string) {
+export async function updateFavoriteUser(productId: string) {
   try {
-    const user = await clerkClient.users.getUser(userId);
+    const { userId: clerkUserId } = await auth();
 
-    let favorites = (user.privateMetadata?.favorites as string[]) ?? [];
-
-    if (!Array.isArray(favorites)) {
-      favorites = [];
+    if (!clerkUserId) {
+      return {
+        status: 401,
+        message: "Unauthorized",
+      };
     }
 
-    // Toggle logic
-    if (!favorites.includes(productId)) {
-      favorites.push(productId);
-    } else {
-      favorites = favorites.filter((id) => id !== productId);
+    const dbUser = await prisma.user.findUnique({
+      where: { clerkUserId },
+    });
+
+    if (!dbUser) {
+      return {
+        status: 404,
+        message: "User not found in database",
+      };
     }
 
-    await clerkClient.users.updateUserMetadata(userId, {
-      privateMetadata: {
-        ...user.privateMetadata,
-        favorites,
+    const userId = dbUser.id;
+    const existingFavorite = await prisma.favorite.findUnique({
+      where: {
+        userId_productId: {
+          userId,
+          productId,
+        },
       },
     });
+
+    if (existingFavorite) {
+      await prisma.favorite.delete({
+        where: {
+          id: existingFavorite.id,
+        },
+      });
+    } else {
+      await prisma.favorite.create({
+        data: {
+          userId,
+          productId,
+        },
+      });
+    }
 
     revalidatePath(Routes.ROOT);
     revalidatePath(Pages.SHOP);
@@ -126,14 +150,14 @@ export async function updateFavoriteUser(productId: string, userId: string) {
 
     return {
       status: 200,
-      message: "Favorite products updated",
-      favorites,
+      message: existingFavorite
+        ? "Removed from favorites"
+        : "Added to favorites",
     };
   } catch (error) {
-    console.error(error);
     return {
       status: 500,
-      message: "internal server error",
+      message: error instanceof Error ? error.message : "internal server error",
     };
   }
 }
