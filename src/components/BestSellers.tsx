@@ -5,7 +5,7 @@ import LottieHandler from "@/lib/LottieHandler";
 import { getBestSellers } from "@/server/db/products";
 import { getUserFavoriteIds } from "@/server/db/favorite";
 
-const HomeProducts = async () => {
+const BestSellers = async () => {
   const Products = await getBestSellers(10);
   const userFavoriteIds = await getUserFavoriteIds();
 
@@ -39,4 +39,4 @@ const HomeProducts = async () => {
   );
 };
 
-export default HomeProducts;
+export default BestSellers;

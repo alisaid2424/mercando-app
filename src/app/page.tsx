@@ -1,14 +1,14 @@
 import Banner from "@/components/Banner";
+import BestSellers from "@/components/BestSellers";
 import FeaturedProduct from "@/components/FeaturedProduct";
 import HeaderSlider from "@/components/HeaderSlider";
-import HomeProducts from "@/components/HomeProducts";
 import NewsLetter from "@/components/NewsLetter";
 
 const HomePage = () => {
   return (
     <>
       <HeaderSlider />
-      <HomeProducts />
+      <BestSellers />
       <FeaturedProduct />
       <Banner />
       <NewsLetter />
