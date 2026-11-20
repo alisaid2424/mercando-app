@@ -62,8 +62,11 @@ const AddToFavoriteButton = ({
   return (
     <Button
       size="icon"
+      type="button"
       onClick={handleAddToFavoriteButton}
       data-hover-icon
+      aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+      aria-pressed={isFavorite}
       className="
     absolute top-2 right-2 bg-white p-2 rounded-full shadow-md 
     active:scale-95 transition

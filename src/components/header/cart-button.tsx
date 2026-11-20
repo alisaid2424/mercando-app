@@ -34,10 +34,16 @@ const CartButton = () => {
   return (
     <>
       <button
+        type="button"
         onClick={() => setOpenCartList((prev) => !prev)}
+        aria-label={quantity > 0 ? `Open cart, ${quantity} items` : "Open cart"}
+        aria-expanded={openCartList}
         className="flex relative outline-none bg-transparent"
       >
-        <ShoppingCartIcon className="text-3xl font-bold text-gray-500" />
+        <ShoppingCartIcon
+          className="text-3xl font-bold text-gray-500"
+          aria-hidden="true"
+        />
 
         {quantity > 0 && (
           <span

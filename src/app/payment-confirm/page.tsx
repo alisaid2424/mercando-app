@@ -20,7 +20,7 @@ const PaymentConfirm = () => {
       <div className="flex justify-center items-center relative">
         <Image
           className="absolute p-5"
-          src="/checkmark.png"
+          src="/checkmark.webp"
           width={80}
           height={80}
           alt="payment-confirm-img"

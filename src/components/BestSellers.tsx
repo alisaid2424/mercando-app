@@ -25,9 +25,9 @@ const BestSellers = async () => {
           </div>
           <Link
             href={Pages.SHOP}
-            className="px-12 py-2.5 border rounded text-gray-500/70 hover:bg-slate-50/90 transition"
+            className="px-12 py-2.5 border border-gray-700 rounded text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
           >
-            See more
+            See More
           </Link>
         </>
       ) : (

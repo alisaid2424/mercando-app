@@ -110,8 +110,10 @@ const Navbar = () => {
       }
       variant="outline"
       className="btn-user"
+      aria-label="Sign in"
     >
-      <User className="w-4 h-4" />
+      <User className="w-4 h-4" aria-hidden="true" />
+      <span className="sr-only">Sign in</span>
     </Button>
   );
 
@@ -126,11 +128,15 @@ const Navbar = () => {
   return (
     <>
       {/* Navigation links for desktop view*/}
-      <div className="flex items-center gap-4 lg:gap-8 max-md:hidden">
+      <nav
+        aria-label="Main navigation"
+        className="flex items-center gap-4 lg:gap-8 max-md:hidden"
+      >
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
+            aria-current={isActive(link.href) ? "page" : undefined}
             className={`hover:text-primary transition ${
               isActive(link.href) ? "text-primary" : "text-accent"
             }`}
@@ -140,14 +146,16 @@ const Navbar = () => {
         ))}
 
         <SellerDashboardButton />
-      </div>
+      </nav>
 
       {/* User icons section - desktop view*/}
-      <ul className="hidden md:flex items-center gap-8">
-        <Search className="w-5 h-5 text-gray-500" />
+      <div className="hidden md:flex items-center gap-8">
+        <Link href={Pages.SHOP} aria-label="Search products">
+          <Search className="w-5 h-5 text-gray-500" aria-hidden="true" />
+        </Link>
         <CartButton />
         {user ? <UserMenu /> : <SignInButton />}
-      </ul>
+      </div>
 
       {/* Mobile view components*/}
       <div className="flex items-center md:hidden gap-7">

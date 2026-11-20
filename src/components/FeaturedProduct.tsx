@@ -5,19 +5,19 @@ import { Button } from "./ui/button";
 const products = [
   {
     id: 1,
-    image: "/boy_with_headphone_image.jpg",
+    image: "/boy_with_headphone_image.webp",
     title: "Unparalleled Sound",
     description: "Experience crystal-clear audio with premium headphones.",
   },
   {
     id: 2,
-    image: "/boy_with_earphone_image.jpg",
+    image: "/boy_with_earphone_image.webp",
     title: "Stay Connected",
     description: "Compact and stylish earphones for every occasion.",
   },
   {
     id: 3,
-    image: "/boy_with_laptop_image.png",
+    image: "/boy_with_laptop_image.webp",
     title: "Power in Every Pixel",
     description: "Shop the latest laptops for work, gaming, and more.",
   },
@@ -40,6 +40,7 @@ const FeaturedProduct = () => {
               className="brightness-75 group-hover:brightness-90 transition duration-300 w-full h-[450px] object-cover"
               width={400}
               height={400}
+              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
             />
             <div className="group-hover:-translate-y-4 transition duration-300 absolute bottom-8 left-8 text-white space-y-2">
               <p className="font-medium text-xl lg:text-2xl">{title}</p>

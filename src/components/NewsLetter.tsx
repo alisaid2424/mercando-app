@@ -7,20 +7,30 @@ const NewsLetter = () => {
         <h1 className="md:text-4xl text-2xl font-medium">
           Subscribe now & get 20% off
         </h1>
-        <p className="md:text-base text-gray-500/80 max-w-md pb-8">
+        <p className="md:text-base text-gray-600 max-w-md pb-8">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.
         </p>
-        <div className="flex items-center justify-between max-w-2xl w-full md:h-14 h-12">
+        <form className="flex items-center justify-between max-w-2xl w-full md:h-14 h-12">
+          <label htmlFor="newsletter-email" className="sr-only">
+            Email address
+          </label>
           <input
-            className="border border-gray-500/30 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-gray-500"
-            type="text"
+            id="newsletter-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            className="border border-gray-500/30 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-gray-700"
             placeholder="Enter Your Email"
           />
-          <Button className="md:px-12 px-8 h-full rounded-md rounded-s-none">
+          <Button
+            type="submit"
+            className="md:px-12 px-8 h-full rounded-md rounded-s-none"
+          >
             Subscribe
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );
