@@ -27,9 +27,11 @@ const ProductImageGallary = ({ productData }: { productData: Product }) => {
         <Image
           src={images[currentSlide]}
           alt={`Main Image ${currentSlide + 1}`}
-          className="w-full h-[350px] object-contain mix-blend-multiply"
           width={1280}
           height={720}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 640px"
+          priority
+          className="w-full h-[350px] object-contain mix-blend-multiply"
         />
       </div>
 
@@ -46,6 +48,7 @@ const ProductImageGallary = ({ productData }: { productData: Product }) => {
               src={img}
               alt={`Thumb ${index + 1}`}
               className="w-full h-20 object-contain mix-blend-multiply"
+              sizes="(max-width: 768px) 22vw, 160px"
               width={200}
               height={200}
             />

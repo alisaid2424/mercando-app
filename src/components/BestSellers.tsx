@@ -6,8 +6,10 @@ import { getBestSellers } from "@/server/db/products";
 import { getUserFavoriteIds } from "@/server/db/favorite";
 
 const BestSellers = async () => {
-  const Products = await getBestSellers(10);
-  const userFavoriteIds = await getUserFavoriteIds();
+  const [Products, userFavoriteIds] = await Promise.all([
+    getBestSellers(10),
+    getUserFavoriteIds(),
+  ]);
 
   return (
     <div className="container max-w-7xl element-center flex-col pt-14">

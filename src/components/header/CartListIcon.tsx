@@ -33,7 +33,8 @@ const CartListIcon = ({ onSetOpen, cartitems }: Props) => {
                   src={item.product.images[0]}
                   width={300}
                   height={300}
-                  alt="img-item-cart"
+                  sizes="64px"
+                  alt={item.product.name}
                   className="size-16 rounded-sm object-cover"
                 />
 
@@ -66,9 +67,9 @@ const CartListIcon = ({ onSetOpen, cartitems }: Props) => {
                           {formatCurrency(
                             Number(
                               (item.product.offerPrice * item.quantity).toFixed(
-                                2
-                              )
-                            )
+                                2,
+                              ),
+                            ),
                           )}
                         </dd>
                       </div>

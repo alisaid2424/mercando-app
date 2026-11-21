@@ -15,9 +15,6 @@ export const getBestSellers = cache(
           _count: "desc",
         },
       },
-      include: {
-        category: true,
-      },
 
       take: limit,
     });
@@ -25,7 +22,7 @@ export const getBestSellers = cache(
     return bestSellers;
   },
   ["best-sellers"],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 );
 
 export const getProducts = cache(
@@ -38,7 +35,7 @@ export const getProducts = cache(
     return products;
   },
   ["products"],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 );
 
 export const getAllProducts = cache(
@@ -49,7 +46,7 @@ export const getAllProducts = cache(
     return products;
   },
   ["all-products"],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 );
 
 export const getProduct = cache(
@@ -64,6 +61,16 @@ export const getProduct = cache(
     });
     return product;
   },
-  [`product-${crypto.randomUUID()}`],
-  { revalidate: 3600 }
+  ["get-product"],
+  { revalidate: 3600 },
+);
+
+export const getLatestProducts = cache(
+  (limit = 5) =>
+    prisma.product.findMany({
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    }),
+  ["latest-products"],
+  { revalidate: 3600 },
 );

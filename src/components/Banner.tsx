@@ -12,7 +12,7 @@ const Banner = () => {
           alt="JBL portable speaker"
           width={300}
           height={300}
-          sizes="(max-width: 768px) 70vw, 224px"
+          sizes="224px"
         />
         <div className="flex flex-col items-center justify-center text-center space-y-2 px-4 md:px-0">
           <h2 className="text-2xl md:text-3xl font-semibold max-w-[290px]">

@@ -3,12 +3,16 @@ import BestSellers from "@/components/BestSellers";
 import FeaturedProduct from "@/components/FeaturedProduct";
 import HeaderSlider from "@/components/HeaderSlider";
 import NewsLetter from "@/components/NewsLetter";
+import ProductSkeleton from "@/components/ProductSkeleton";
+import { Suspense } from "react";
 
 const HomePage = () => {
   return (
     <>
       <HeaderSlider />
-      <BestSellers />
+      <Suspense fallback={<ProductSkeleton />}>
+        <BestSellers />
+      </Suspense>
       <FeaturedProduct />
       <Banner />
       <NewsLetter />

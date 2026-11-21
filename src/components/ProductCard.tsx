@@ -10,15 +10,11 @@ interface ProductCardProps {
   isFavorite: boolean;
 }
 
-const ProductCard = async ({
-  product,
-  isFavorite = false,
-}: ProductCardProps) => {
+const ProductCard = ({ product, isFavorite = false }: ProductCardProps) => {
   return (
     <div className="group relative flex flex-col items-start gap-0.5">
       <Link
         href={`/product/${product.id}`}
-        scroll={true}
         className="flex w-full flex-col items-start gap-0.5 cursor-pointer"
       >
         <div className="relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center overflow-hidden">

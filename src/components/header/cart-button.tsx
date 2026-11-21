@@ -3,20 +3,18 @@
 import { selectCartItems } from "@/store/cart/cartSlice";
 import { useAppSelector } from "@/store/hook";
 import { ShoppingCartIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CartListIcon from "./CartListIcon";
 import { CartItemWithProduct } from "@/types/product";
 
 const CartButton = () => {
-  const [quantity, setQuantity] = useState(0);
   const [isAnimateCart, setIsAnimateCart] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
   const cartItems = useAppSelector(selectCartItems) as CartItemWithProduct[];
-
-  useEffect(() => {
-    const total = cartItems.reduce((acc, item) => acc + item.quantity!, 0);
-    setQuantity(total);
-  }, [cartItems]);
+  const quantity = useMemo(
+    () => cartItems.reduce((acc, item) => acc + (item.quantity ?? 0), 0),
+    [cartItems],
+  );
 
   useEffect(() => {
     if (!quantity) {

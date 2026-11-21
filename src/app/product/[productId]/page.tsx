@@ -1,11 +1,12 @@
 import ProductCard from "@/components/ProductCard";
 import StarRateing from "@/components/StarRating";
 import ProductImageGallary from "@/components/ProductImageGallary";
-import { Button } from "@/components/ui/button";
 import AddToCartButton from "@/components/AddToCartButton";
-import { getAllProducts, getProduct } from "@/server/db/products";
-import { productIncloudeCategory } from "@/types/product";
+import { getLatestProducts, getProduct } from "@/server/db/products";
 import { getUserFavoriteIds } from "@/server/db/favorite";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Pages } from "@/constants/enums";
 
 type PageProps = {
   params: Promise<{
@@ -15,9 +16,15 @@ type PageProps = {
 
 const Product = async ({ params }: PageProps) => {
   const { productId } = await params;
-  const productData = (await getProduct(productId)) as productIncloudeCategory;
-  const getProducts = await getAllProducts();
-  const userFavoriteIds = await getUserFavoriteIds();
+  const [productData, relatedProducts, userFavoriteIds] = await Promise.all([
+    getProduct(productId),
+    getLatestProducts(5),
+    getUserFavoriteIds(),
+  ]);
+
+  if (!productData) {
+    notFound();
+  }
 
   return (
     <div className="container max-w-7xl space-y-10 pt-12">
@@ -79,7 +86,7 @@ const Product = async ({ params }: PageProps) => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full">
-          {getProducts.slice(0, 5).map((product) => (
+          {relatedProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -88,13 +95,12 @@ const Product = async ({ params }: PageProps) => {
           ))}
         </div>
 
-        <Button
-          variant="outline"
-          size="lg"
-          className="mb-16 hover:!bg-transparent hover:text-primary hover:border-primary transition"
+        <Link
+          href={Pages.SHOP}
+          className="mb-16 px-12 py-2.5 border border-gray-700 rounded text-gray-700 hover:border-primary hover:text-primary  transition-all duration-300"
         >
-          See more
-        </Button>
+          See More
+        </Link>
       </div>
     </div>
   );
