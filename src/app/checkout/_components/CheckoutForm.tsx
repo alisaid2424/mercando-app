@@ -58,7 +58,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
           toast({
             title: "Error",
             description: "Payment creation failed. Try again later.",
-            className: "bg-red-100 text-red-600",
+            className: "bg-red-100 text-red-800 border-red-300",
           });
 
           return;
@@ -73,7 +73,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
           toast({
             title: "Success! 🎉",
             description: "Payment successful and order created and send email",
-            className: "bg-green-100 text-green-600",
+            className: "bg-green-100 text-green-800 border-green-300",
           });
         }
 
@@ -93,7 +93,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
           toast({
             title: "Error",
             description: result.error.message,
-            className: "bg-red-100 text-red-600",
+            className: "bg-red-100 text-red-800 border-red-300",
           });
 
           return;
@@ -105,7 +105,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
             error instanceof Error
               ? error.message
               : "Unexpected error occurred",
-          className: "bg-red-100 text-red-600",
+          className: "bg-red-100 text-red-800 border-red-300",
         });
       }
     });
@@ -116,7 +116,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
       toast({
         title: "Error",
         description: "User Not Found",
-        className: "bg-red-100 text-red-600",
+        className: "bg-red-100 text-red-800 border-red-300",
       });
 
       return;
@@ -125,7 +125,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
       toast({
         title: "Error",
         description: "User name is required",
-        className: "bg-red-100 text-red-600",
+        className: "bg-red-100 text-red-800 border-red-300",
       });
       return;
     }
@@ -166,7 +166,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
         toast({
           title: "Success! 🎉",
           description: result.message,
-          className: "bg-green-100 text-green-600",
+          className: "bg-green-100 text-green-800 border-green-300",
         });
 
         return result.order;
@@ -174,7 +174,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
         toast({
           title: "Error",
           description: result.message,
-          className: "bg-red-100 text-red-600",
+          className: "bg-red-100 text-red-800 border-red-300",
         });
       }
     } catch (err) {
@@ -188,7 +188,7 @@ const CheckoutForm = ({ amount, user }: CheckoutFormProps) => {
       toast({
         title: "Error",
         description: "User Not Found",
-        className: "bg-red-100 text-red-600",
+        className: "bg-red-100 text-red-800 border-red-300",
       });
       return;
     }

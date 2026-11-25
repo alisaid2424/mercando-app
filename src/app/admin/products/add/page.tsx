@@ -13,20 +13,18 @@ const AddProductPage = async () => {
   }
 
   return (
-    <main>
-      <section className="section-gap w-full lg:w-3/4 mx-auto">
-        <div className="container">
-          <Link
-            href={`${Routes.PRODUCTS}?pageNumber=1`}
-            className="flex items-center gap-2 mb-5 bg-gray-500 hover:bg-gray-600 transition-all text-white text-sm sm:text-base rounded-full w-fit py-2 px-3"
-          >
-            <ArrowLeftCircle size={24} /> Back to Products
-          </Link>
+    <section className="section-gap w-full lg:w-3/4 mx-auto">
+      <div className="container">
+        <Link
+          href={`${Routes.PRODUCTS}?pageNumber=1`}
+          className="flex items-center gap-2 mb-5 bg-gray-500 hover:bg-gray-600 transition-all text-white text-sm sm:text-base rounded-full w-fit py-2 px-3"
+        >
+          <ArrowLeftCircle size={24} /> Back to Products
+        </Link>
 
-          <ProductForm key="new-product" categories={categories} />
-        </div>
-      </section>
-    </main>
+        <ProductForm key="new-product" categories={categories} />
+      </div>
+    </section>
   );
 };
 

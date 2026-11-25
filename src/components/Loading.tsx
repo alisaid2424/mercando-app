@@ -5,6 +5,7 @@ const Loading = () => {
     <div className="fixed inset-0 z-50 bg-background/80">
       <div className="w-full h-dvh grid place-content-center">
         <LoaderCircle className="h-20 w-20 animate-spin text-orange-300" />
+        <span className="sr-only">Loading…</span>
       </div>
     </div>
   );

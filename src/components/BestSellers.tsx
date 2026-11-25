@@ -13,7 +13,9 @@ const BestSellers = async () => {
 
   return (
     <div className="container max-w-7xl element-center flex-col pt-14">
-      <p className="text-2xl font-medium text-left w-full">Popular products</p>
+      <h2 className="text-2xl font-medium text-left w-full">
+        Popular products
+      </h2>
       {Products.length ? (
         <>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-6 pb-14 w-full">
@@ -27,7 +29,7 @@ const BestSellers = async () => {
           </div>
           <Link
             href={Pages.SHOP}
-            className="px-12 py-2.5 border border-gray-700 rounded text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+            className="px-12 py-2.5 border border-gray-700 rounded text-gray-700 hover:border-primary hover:text-primary transition-all duration-300"
           >
             See More
           </Link>

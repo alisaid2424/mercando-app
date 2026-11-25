@@ -49,7 +49,6 @@ const HeaderSlider = () => {
   return (
     <section
       className="w-full overflow-hidden relative"
-      aria-roledescription="carousel"
       aria-label="Featured offers"
     >
       <div
@@ -57,22 +56,26 @@ const HeaderSlider = () => {
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
         {sliderData.map((slide, index) => (
-          <div key={slide.id} className="w-full flex-shrink-0 py-6">
+          <div
+            key={slide.id}
+            aria-hidden={currentSlide !== index}
+            className="w-full flex-shrink-0 py-6"
+          >
             <div className="container max-w-7xl">
               <div className="bg-[#E6E9F2] max-md:h-[475px] rounded-xl flex flex-col-reverse md:flex-row items-center justify-between px-5 md:px-14 py-8 ">
                 {/* Text Section */}
                 <div className="md:pl-8 mt-10 md:mt-0 max-w-xl">
-                  <p className="md:text-base text-primary-strong pb-1">
+                  <p className="md:text-base text-primary pb-1">
                     {slide.offer}
                   </p>
-                  <h1 className="text-2xl md:text-[40px] md:leading-[48px] font-semibold max-md:min-h-[110px]">
+                  <h2 className="text-2xl md:text-[40px] md:leading-[48px] font-semibold max-md:min-h-[110px]">
                     {slide.title}
-                  </h1>
+                  </h2>
                   <div className="flex items-center mt-4 md:mt-6 gap-4 flex-wrap">
                     <Button
                       variant="default"
                       size="lg"
-                      className=" rounded-full font-medium "
+                      className="rounded-full font-medium"
                     >
                       {slide.buttonText1}
                     </Button>
@@ -115,10 +118,16 @@ const HeaderSlider = () => {
             onClick={() => handleSlideChange(index)}
             aria-label={`Go to slide ${index + 1}: ${slide.title}`}
             aria-current={currentSlide === index ? "true" : undefined}
-            className={`h-2 w-2 rounded-full cursor-pointer transition-all duration-300 ${
-              currentSlide === index ? "bg-primary" : "bg-gray-500/40"
-            }`}
-          />
+            className="flex h-5 w-5 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span
+              className={`block h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+                currentSlide === index
+                  ? "bg-primary scale-125"
+                  : "bg-gray-500/40"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </section>

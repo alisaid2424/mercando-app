@@ -16,11 +16,13 @@ const Star = ({
   size,
 }: StarProps) => {
   return (
-    <span
-      className="cursor-pointer inline-block"
+    <button
+      type="button"
       onClick={onRating}
       onMouseEnter={haverIn}
       onMouseLeave={haverOut}
+      aria-pressed={fill}
+      className="inline-block cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       style={{ width: `${size}px`, height: `${size}px` }}
     >
       {fill ? (
@@ -49,7 +51,7 @@ const Star = ({
           />
         </svg>
       )}
-    </span>
+    </button>
   );
 };
 

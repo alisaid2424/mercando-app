@@ -22,6 +22,7 @@ export function BackButton({ title, variant, className, ...props }: Props) {
   const router = useRouter();
   return (
     <Button
+      type="button"
       variant={variant}
       className={className}
       onClick={() => router.back()}

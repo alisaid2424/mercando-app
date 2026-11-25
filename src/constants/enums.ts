@@ -27,11 +27,12 @@ export const CATEGORIES_PER_PAGE = 3;
 export const USERS_PER_PAGE = 3;
 export const PRODUCTS_PER_PAGE = 3;
 export const ORDERS_PER_PAGE = 3;
+//https://mercando-app-vg58.vercel.app
+const PRODUCTION_DOMAIN = "https://roseately-patternless-jensen.ngrok-free.dev";
 
-const PRODUCTION_DOMAIN = "https://mercando-app-vg58.vercel.app";
-
-const DEVELOPMENT_DOMAIN = "http://localhost:3000";
-
+const DEVELOPMENT_DOMAIN =
+  "https://roseately-patternless-jensen.ngrok-free.dev";
+//http://localhost:3000
 export const DOMAIN =
   process.env.NODE_ENV === "production"
     ? PRODUCTION_DOMAIN

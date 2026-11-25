@@ -27,7 +27,7 @@ const FeaturedProduct = () => {
   return (
     <div className="container max-w-7xl mt-14 pb-14">
       <div className="flex flex-col items-center">
-        <p className="text-3xl font-medium">Featured Products</p>
+        <h2 className="text-3xl font-medium">Featured Products</h2>
         <div className="w-28 h-0.5 bg-primary mt-2"></div>
       </div>
 
@@ -42,6 +42,7 @@ const FeaturedProduct = () => {
               height={400}
               sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
             <div className="group-hover:-translate-y-4 transition duration-300 absolute bottom-8 left-8 text-white space-y-2">
               <p className="font-medium text-xl lg:text-2xl">{title}</p>
               <p className="text-sm lg:text-base leading-5 max-w-60">

@@ -16,25 +16,23 @@ const EditUserPage = async ({ params }: EditUserPageProps) => {
   if (!user) notFound();
 
   return (
-    <main>
-      <section className="section-gap lg:w-10/12 mx-auto">
-        <div className="container">
-          <Link
-            href={`${Routes.USERS}?pageNumber=1`}
-            className="flex items-center gap-2 mb-20 bg-gray-500 text-white text-base rounded-full w-fit py-2 px-3"
-          >
-            <ArrowLeftCircle size={24} /> Back to Users
-          </Link>
+    <section className="section-gap lg:w-10/12 mx-auto">
+      <div className="container">
+        <Link
+          href={`${Routes.USERS}?pageNumber=1`}
+          className="flex items-center gap-2 mb-20 bg-gray-500 text-white text-base rounded-full w-fit py-2 px-3"
+        >
+          <ArrowLeftCircle size={24} /> Back to Users
+        </Link>
 
-          <>
-            <h1 className="text-primary text-center font-bold text-4xl italic mb-7">
-              Update User
-            </h1>
-            <UpdateUserForm key={user.id} user={user} />
-          </>
+        <div>
+          <h1 className="text-primary text-center font-bold text-4xl italic mb-7">
+            Update User
+          </h1>
+          <UpdateUserForm key={user.id} user={user} />
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 

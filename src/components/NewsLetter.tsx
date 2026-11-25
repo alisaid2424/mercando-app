@@ -4,9 +4,9 @@ const NewsLetter = () => {
   return (
     <div className="container max-w-7xl">
       <div className="flex flex-col items-center justify-center text-center space-y-2 pt-8 pb-14">
-        <h1 className="md:text-4xl text-2xl font-medium">
+        <h2 className="md:text-4xl text-2xl font-medium">
           Subscribe now & get 20% off
-        </h1>
+        </h2>
         <p className="md:text-base text-gray-600 max-w-md pb-8">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.

@@ -19,7 +19,7 @@ const Pagination = ({ pages, pageNumber, route }: PaginationProps) => {
       <Link
         href={prev >= 1 ? `${route}?pageNumber=${prev}` : "#"}
         className={`font-light text-primary ${
-          prev < 1 ? "cursor-not-allowed opacity-50" : ""
+          prev < 1 ? "cursor-not-allowed text-gray-400" : ""
         }`}
         aria-disabled={prev < 1 ? "true" : "false"}
       >
@@ -41,7 +41,7 @@ const Pagination = ({ pages, pageNumber, route }: PaginationProps) => {
       <Link
         href={next <= pages ? `${route}?pageNumber=${next}` : "#"}
         className={`font-light text-primary ${
-          next > pages ? "cursor-not-allowed opacity-50" : ""
+          next > pages ? "cursor-not-allowed text-gray-400" : ""
         }`}
         aria-disabled={next > pages ? "true" : "false"}
       >

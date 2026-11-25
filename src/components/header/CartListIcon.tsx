@@ -12,13 +12,18 @@ type Props = {
 const CartListIcon = ({ onSetOpen, cartitems }: Props) => {
   return (
     <div
+      aria-label="cart-title"
       className="h-[400px] w-[350px] bg-gray-100 z-10 rounded-md border shadow-sm absolute mx-10 -right-8 sm:right-20 
       md:right-24
     lg:right-20 xl:right-28 top-16 p-5 overflow-auto"
     >
+      <h2 id="cart-title" className="sr-only">
+        Shopping cart
+      </h2>
       <button
+        type="button"
         onClick={() => onSetOpen(false)}
-        className="absolute end-4 top-4 text-gray-600 hover:scale-110 hover:text-red-600 hover:rotate-180 transition-all duration-300"
+        className="absolute end-2 top-2 inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-600 hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <span className="sr-only">Close cart</span>
         <X className="size-5" aria-hidden="true" />
@@ -92,7 +97,7 @@ const CartListIcon = ({ onSetOpen, cartitems }: Props) => {
 
           <a
             href="#"
-            className="inline-block text-sm text-gray-500 underline underline-offset-4 transition hover:text-gray-600"
+            className="inline-block text-sm text-gray-700 underline underline-offset-4 transition hover:text-gray-600"
           >
             Continue shopping
           </a>

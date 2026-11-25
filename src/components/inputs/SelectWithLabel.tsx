@@ -75,7 +75,7 @@ export function SelectWithLabel<S>({
                         value={item.id}
                         className={`uppercase text-accent hover:!text-white hover:!bg-primary ${
                           isSelected
-                            ? "bg-primary text-white font-semibold"
+                            ? "bg-primary text-primary-foreground font-semibold"
                             : ""
                         }`}
                       >

@@ -54,7 +54,7 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
             toast({
               title: "Success! 🎉",
               description: res.message,
-              className: "bg-green-100 text-green-600",
+              className: "bg-green-100 text-green-800 border-green-300",
             });
             router.push(`${Routes.CATEGORIES}?pageNumber=1`);
           } else if (res.status === 400 && res.error) {
@@ -67,13 +67,13 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
             toast({
               title: "Form Errors",
               description: "Please fix the highlighted fields.",
-              className: "bg-red-100 text-red-600",
+              className: "bg-red-100 text-red-800 border-red-300",
             });
           } else {
             toast({
               title: "Error",
               description: res.message,
-              className: "bg-red-100 text-red-600",
+              className: "bg-red-100 text-red-800 border-red-300",
             });
           }
         }
@@ -82,7 +82,7 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
           title: "Error",
           description:
             error instanceof Error ? error.message : "Something went wrong",
-          className: "bg-red-100 text-red-600",
+          className: "bg-red-100 text-red-800 border-red-300",
         });
       }
     });

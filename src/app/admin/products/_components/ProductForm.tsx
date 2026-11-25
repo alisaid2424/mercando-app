@@ -77,7 +77,7 @@ const ProductForm = ({ product, categories }: ProductFormProps) => {
           toast({
             title: "Success! 🎉",
             description: res.message,
-            className: "bg-green-100 text-green-600",
+            className: "bg-green-100 text-green-800 border-green-300",
           });
 
           router.push(`${Routes.PRODUCTS}?pageNumber=1`);
@@ -92,13 +92,13 @@ const ProductForm = ({ product, categories }: ProductFormProps) => {
           toast({
             title: "Form Errors",
             description: "Please fix the highlighted fields.",
-            className: "bg-red-100 text-red-600",
+            className: "bg-red-100 text-red-800 border-red-300",
           });
         } else {
           toast({
             title: "Error",
             description: res.message,
-            className: "bg-red-100 text-red-600",
+            className: "bg-red-100 text-red-800 border-red-300",
           });
         }
       } catch (error) {
@@ -108,7 +108,7 @@ const ProductForm = ({ product, categories }: ProductFormProps) => {
             error instanceof Error
               ? error.message
               : "Unexpected error occurred",
-          className: "bg-red-100 text-red-600",
+          className: "bg-red-100 text-red-800 border-red-300",
         });
       }
     });

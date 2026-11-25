@@ -42,13 +42,14 @@ const LottieHandler = ({ type, message }: LottieHandlerProps) => {
       <AnimationComponent />
 
       {message && (
-        <h3
+        <p
+          role={type === "error" ? "alert" : "status"}
           className={`mt-5 text-lg font-medium ${
             type === "error" ? "text-destructive" : "text-muted-foreground"
           } break-words whitespace-pre-wrap`}
         >
           {message}
-        </h3>
+        </p>
       )}
     </div>
   );

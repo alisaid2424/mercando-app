@@ -28,26 +28,30 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div className=" md:w-40 lg:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col">
+    <nav
+      aria-label="Admin navigation"
+      className=" md:w-40 lg:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col"
+    >
       {tabs.map(({ title, href, icon: Icon }) => {
         const isActive = isActiveTab(href);
 
         return (
-          <Link href={`${href}?pageNumber=1`} key={title}>
-            <div
-              className={`flex items-center py-3 px-4 gap-3 transition-all ${
-                isActive
-                  ? "border-r-4 md:border-r-[6px] bg-orange-600/10 border-orange-500/90"
-                  : "hover:bg-gray-100/90 border-white"
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <p className="md:block hidden">{title}</p>
-            </div>
+          <Link
+            href={`${href}?pageNumber=1`}
+            key={title}
+            aria-current={isActive ? "page" : undefined}
+            className={`flex items-center py-3 px-4 gap-3 transition-all ${
+              isActive
+                ? "border-r-4 md:border-r-[6px] bg-orange-200 border-orange-500/90"
+                : "hover:bg-orange-200 border-white"
+            }`}
+          >
+            <Icon className="w-5 h-5" aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">{title}</span>
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 };
 

@@ -58,7 +58,7 @@ const DeliveryInformationForm = ({ user }: DeliveryInfoProps) => {
             title: "Success! 🎉",
             description:
               "Your delivery information has been saved successfully! Redirecting you to checkout...",
-            className: "bg-green-100 text-green-600",
+            className: "bg-green-100 text-green-800 border-green-300",
           });
 
           router.push(`/checkout?amount=${totalAmount.toFixed(2)}`);
@@ -66,7 +66,7 @@ const DeliveryInformationForm = ({ user }: DeliveryInfoProps) => {
           toast({
             title: "Error",
             description: result.message || "Something went wrong",
-            className: "bg-red-100 text-red-600",
+            className: "bg-red-100 text-red-800 border-red-300",
           });
         }
       } catch (error) {
@@ -74,7 +74,7 @@ const DeliveryInformationForm = ({ user }: DeliveryInfoProps) => {
           title: "Error",
           description:
             error instanceof Error ? error.message : "Unexpected error",
-          className: "bg-red-100 text-red-600",
+          className: "bg-red-100 text-red-800 border-red-300",
         });
       }
     });

@@ -66,7 +66,7 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
           toast({
             title: "Success! 🎉",
             description: result.message,
-            className: "bg-green-100 text-green-600",
+            className: "bg-green-100 text-green-800 border-green-300",
           });
 
           if (pathName === Routes.ADMIN) {
@@ -78,7 +78,7 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
           toast({
             title: "Error",
             description: result.message || "Something went wrong",
-            className: "bg-red-100 text-red-600",
+            className: "bg-red-100 text-red-800 border-red-300",
           });
         }
       } catch (error) {
@@ -86,7 +86,7 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
           title: "Error",
           description:
             error instanceof Error ? error.message : "Something went wrong",
-          className: "bg-red-100 text-red-600",
+          className: "bg-red-100 text-red-800 border-red-300",
         });
       }
     });

@@ -10,8 +10,8 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 21, 90%, 48%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 21, 90%, 49%;
+    --primary-foreground: 222.2 84% 4.9%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -88,7 +88,7 @@
     @apply my-8 md:my-16;
   }
   .btn-link {
-    @apply border-2 bg-primary text-white opacity-50 transition-all duration-300  hover:opacity-100 flex items-center justify-center 
+    @apply border-2 bg-primary text-primary-foreground opacity-50 transition-all duration-300  hover:opacity-100 flex items-center justify-center 
     w-5 h-5 sm:w-[30px] sm:h-[30px] mx-2 sm:mx-3 rounded-full p-3  
     text-[10px] sm:text-xs;
   }

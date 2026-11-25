@@ -32,9 +32,9 @@ const Product = async ({ params }: PageProps) => {
         <ProductImageGallary productData={productData} />
 
         <div className="flex flex-col">
-          <h1 className="text-2xl sm:text-3xl font-medium text-gray-800/90 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-medium text-gray-800/90 mb-4">
             {productData.name}
-          </h1>
+          </h2>
 
           <StarRateing
             maxRating={7}
@@ -46,7 +46,7 @@ const Product = async ({ params }: PageProps) => {
           <p className="text-gray-600 mt-3">{productData.description}</p>
           <p className="text-3xl font-medium mt-6">
             ${productData.offerPrice}
-            <span className="text-base font-normal text-gray-800/60 line-through ml-2">
+            <span className="text-base font-normal text-gray-500 line-through ml-2">
               ${productData.price}
             </span>
           </p>
@@ -56,17 +56,15 @@ const Product = async ({ params }: PageProps) => {
               <tbody>
                 <tr>
                   <td className="text-gray-600 font-medium">Brand</td>
-                  <td className="text-gray-800/50 ">Generic</td>
+                  <td className="text-gray-600">Generic</td>
                 </tr>
                 <tr>
                   <td className="text-gray-600 font-medium">Color</td>
-                  <td className="text-gray-800/50 ">Multi</td>
+                  <td className="text-gray-600">Multi</td>
                 </tr>
                 <tr>
                   <td className="text-gray-600 font-medium">Category</td>
-                  <td className="text-gray-800/50">
-                    {productData.category.name}
-                  </td>
+                  <td className="text-gray-600">{productData.category.name}</td>
                 </tr>
               </tbody>
             </table>

@@ -150,9 +150,14 @@ const Navbar = () => {
 
       {/* User icons section - desktop view*/}
       <div className="hidden md:flex items-center gap-8">
-        <Link href={Pages.SHOP} aria-label="Search products">
-          <Search className="w-5 h-5 text-gray-500" aria-hidden="true" />
+        <Link
+          href={Pages.SHOP}
+          aria-label="Browse all products"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <Search className="w-5 h-5" aria-hidden="true" />
         </Link>
+
         <CartButton />
         {user ? <UserMenu /> : <SignInButton />}
       </div>

@@ -18,20 +18,18 @@ const EditCategoryPage = async ({ params }: PageProps) => {
   if (!category) notFound();
 
   return (
-    <main>
-      <section className="section-gap lg:w-3/4 mx-auto">
-        <div className="container">
-          <Link
-            href={`${Routes.CATEGORIES}?pageNumber=1`}
-            className="flex items-center gap-2 mb-20 bg-gray-500 text-white text-base rounded-full w-fit py-2 px-3"
-          >
-            <ArrowLeftCircle size={24} /> Back to Categories
-          </Link>
+    <section className="section-gap lg:w-3/4 mx-auto">
+      <div className="container">
+        <Link
+          href={`${Routes.CATEGORIES}?pageNumber=1`}
+          className="flex items-center gap-2 mb-20 bg-gray-500 text-white text-base rounded-full w-fit py-2 px-3"
+        >
+          <ArrowLeftCircle size={24} /> Back to Categories
+        </Link>
 
-          <CategoryForm key={category.id} category={category} />
-        </div>
-      </section>
-    </main>
+        <CategoryForm key={category.id} category={category} />
+      </div>
+    </section>
   );
 };
 

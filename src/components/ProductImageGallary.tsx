@@ -26,7 +26,7 @@ const ProductImageGallary = ({ productData }: { productData: Product }) => {
       <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
         <Image
           src={images[currentSlide]}
-          alt={`Main Image ${currentSlide + 1}`}
+          alt={`${productData.name} — image ${currentSlide + 1}`}
           width={1280}
           height={720}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 640px"
@@ -37,22 +37,25 @@ const ProductImageGallary = ({ productData }: { productData: Product }) => {
 
       <div className="grid grid-cols-4 gap-4">
         {images.map((img: string, index: number) => (
-          <div
+          <button
+            type="button"
             key={index}
             onClick={() => handleSlideChange(index)}
-            className={`cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 border ${
+            aria-label={`Show image ${index + 1} of ${images.length}`}
+            aria-pressed={currentSlide === index}
+            className={`cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
               currentSlide === index ? "border-primary" : "border-transparent"
             }`}
           >
             <Image
               src={img}
-              alt={`Thumb ${index + 1}`}
+              alt={`${productData.name} — imageThumb ${index + 1}`}
               className="w-full h-20 object-contain mix-blend-multiply"
               sizes="(max-width: 768px) 22vw, 160px"
               width={200}
               height={200}
             />
-          </div>
+          </button>
         ))}
       </div>
     </div>

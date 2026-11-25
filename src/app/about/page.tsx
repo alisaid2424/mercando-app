@@ -10,7 +10,7 @@ const AboutPage = () => {
               <Image
                 src="https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=600&h=750"
                 loading="lazy"
-                alt="Photo by Martin Sanchez"
+                alt="Workspace with a laptop and coffee"
                 className="h-full w-full object-cover object-center"
                 width={500}
                 height={700}

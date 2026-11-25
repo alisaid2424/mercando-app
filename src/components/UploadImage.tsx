@@ -41,19 +41,19 @@ const UploadImage = <T extends FieldValues>({
         : [];
 
   const [files, setFiles] = useState<(string | File | undefined)[]>(
-    multiple ? Array(maxFiles).fill(undefined) : [undefined]
+    multiple ? Array(maxFiles).fill(undefined) : [undefined],
   );
 
   const [previews, setPreviews] = useState<string[]>(
-    multiple ? Array(maxFiles).fill("") : initialImages
+    multiple ? Array(maxFiles).fill("") : initialImages,
   );
 
   const [uploadProgress, setUploadProgress] = useState<(number | null)[]>(
-    multiple ? Array(maxFiles).fill(null) : [null]
+    multiple ? Array(maxFiles).fill(null) : [null],
   );
 
   const [uploadComplete, setUploadComplete] = useState<boolean[]>(
-    multiple ? Array(maxFiles).fill(false) : [!!initialImages[0]]
+    multiple ? Array(maxFiles).fill(false) : [!!initialImages[0]],
   );
 
   const fileInputs = useRef<(HTMLInputElement | null)[]>([]);
@@ -99,7 +99,7 @@ const UploadImage = <T extends FieldValues>({
   /** Change pictures*/
   const handleImagesChange = async (
     selectedFiles: File[],
-    startIndex: number
+    startIndex: number,
   ) => {
     const updatedFiles = [...files];
     const updatedPreviews = [...previews];
@@ -159,7 +159,7 @@ const UploadImage = <T extends FieldValues>({
   const updateFormValue = (updatedFiles: (string | File | undefined)[]) => {
     const cleanImages = updatedFiles.filter(
       (img): img is string | File =>
-        img !== undefined && (typeof img === "string" || img instanceof File)
+        img !== undefined && (typeof img === "string" || img instanceof File),
     );
 
     if (multiple) {
@@ -203,7 +203,7 @@ const UploadImage = <T extends FieldValues>({
               onClick={() => !readOnly && fileInputs.current[index]?.click()}
               className={cn(
                 multiple ? "w-32 h-32 rounded" : "w-48 h-48 rounded-full",
-                "overflow-hidden border relative cursor-pointer bg-gray-100"
+                "overflow-hidden border relative cursor-pointer bg-gray-100",
               )}
             >
               {previews[index] ? (
@@ -224,7 +224,7 @@ const UploadImage = <T extends FieldValues>({
                 className={cn(
                   "absolute inset-0 bg-black/40 hover:bg-black/20 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100",
                   uploadProgress[index] !== null &&
-                    "opacity-100 cursor-not-allowed"
+                    "opacity-100 cursor-not-allowed",
                 )}
               >
                 {uploadProgress[index] !== null ? (
@@ -259,7 +259,7 @@ const UploadImage = <T extends FieldValues>({
             )}
 
             {uploadComplete[index] && (
-              <div className="text-green-600 text-sm mt-1 flex items-center gap-1 justify-center">
+              <div className="text-green-700 text-sm mt-1 flex items-center gap-1 justify-center">
                 <CheckCircle2 className="w-4 h-4" />
                 Done
               </div>

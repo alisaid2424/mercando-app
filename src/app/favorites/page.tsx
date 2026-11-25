@@ -15,7 +15,7 @@ const Favorites = async () => {
   return (
     <div className="container max-w-7xl flex flex-col items-start">
       <div className="flex flex-col items-end my-10">
-        <p className="text-2xl font-medium">Your Favourite</p>
+        <h2 className="text-2xl font-medium">Your Favourite</h2>
         <div className="w-16 h-0.5 bg-primary rounded-full"></div>
       </div>
 

@@ -19,7 +19,7 @@ const UpdateItemQuantity = ({ cartId, currentQuantity, stock }: Props) => {
       dispatch(updateCartItem({ cartId, quantity: currentQuantity + 1 }));
 
       toast({
-        className: "bg-green-100 text-green-600",
+        className: "bg-green-100 text-green-800 border-green-300",
         title: "Updated Cart",
         description: "Quantity increased successfully ✅",
       });
@@ -31,13 +31,13 @@ const UpdateItemQuantity = ({ cartId, currentQuantity, stock }: Props) => {
 
     if (currentQuantity > 1) {
       toast({
-        className: "bg-green-100 text-green-600",
+        className: "bg-green-100 text-green-800 border-green-300",
         title: "Updated Cart",
         description: "Quantity decreased successfully ✅",
       });
     } else if (currentQuantity === 1) {
       toast({
-        className: "bg-red-100 text-red-600",
+        className: "bg-red-100 text-red-800 border-red-300",
         title: "Deleted Item",
         description: "Deleted Item from cart successfully 🗑️",
       });
@@ -47,6 +47,7 @@ const UpdateItemQuantity = ({ cartId, currentQuantity, stock }: Props) => {
   return (
     <div className="flex items-center justify-center gap-3 md:gap-5">
       <button
+        type="button"
         className="btnDecrease"
         onClick={handleDecrease}
         disabled={currentQuantity <= 0}
@@ -55,6 +56,7 @@ const UpdateItemQuantity = ({ cartId, currentQuantity, stock }: Props) => {
       </button>
       <span className="text-sm font-medium">{currentQuantity}</span>
       <button
+        type="button"
         className="btnIncrease"
         onClick={handleIncrease}
         disabled={currentQuantity >= stock}

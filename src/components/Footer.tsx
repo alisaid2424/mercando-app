@@ -10,7 +10,7 @@ const Footer = () => {
             width={50}
             height={50}
             src="/logo.svg"
-            alt="logo"
+            alt="Mercando"
           />
           <p className="mt-6 text-sm text-center md:text-start">
             Lorem Ipsum is simply dummy text of the printing and typesetting

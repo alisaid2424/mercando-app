@@ -23,7 +23,7 @@ const CartItems = () => {
     dispatch(removeCartItem(id));
 
     toast({
-      className: "bg-red-100 text-red-600",
+      className: "bg-red-100 text-red-800 border-red-300",
       title: "Deleted Item",
       description: "Deleted Item from cart successfully 🗑️",
     });
@@ -58,7 +58,7 @@ const CartItems = () => {
                     {item.product?.images && (
                       <Image
                         src={item.product.images[0]}
-                        alt="img-item-cart"
+                        alt={item.product.name}
                         width={300}
                         height={300}
                         className="size-20 rounded-sm object-cover"
@@ -162,7 +162,7 @@ const CartItems = () => {
 
           <Link
             href={Routes.ROOT}
-            className="p-2 mt-6 text-white rounded-md bg-primary block text-center w-fit mx-auto"
+            className="py-2 px-4 mt-6 text-primary-foreground rounded-md bg-primary block text-center w-fit mx-auto"
           >
             Go Back
           </Link>
