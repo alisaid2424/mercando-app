@@ -32,6 +32,9 @@ const sliderData = [
   },
 ];
 
+const headingClass =
+  "text-2xl md:text-[40px] md:leading-[48px] font-semibold max-md:min-h-[110px]";
+
 const HeaderSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -42,80 +45,80 @@ const HeaderSlider = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSlideChange = (index: number) => {
-    setCurrentSlide(index);
-  };
-
   return (
     <section
-      className="w-full overflow-hidden relative"
+      className="relative w-full overflow-hidden"
       aria-label="Featured offers"
     >
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {sliderData.map((slide, index) => (
-          <div
-            key={slide.id}
-            aria-hidden={currentSlide !== index}
-            className="w-full flex-shrink-0 py-6"
-          >
-            <div className="container max-w-7xl">
-              <div className="bg-[#E6E9F2] max-md:h-[475px] rounded-xl flex flex-col-reverse md:flex-row items-center justify-between px-5 md:px-14 py-8 ">
-                {/* Text Section */}
-                <div className="md:pl-8 mt-10 md:mt-0 max-w-xl">
-                  <p className="md:text-base text-primary pb-1">
-                    {slide.offer}
-                  </p>
-                  <h2 className="text-2xl md:text-[40px] md:leading-[48px] font-semibold max-md:min-h-[110px]">
-                    {slide.title}
-                  </h2>
-                  <div className="flex items-center mt-4 md:mt-6 gap-4 flex-wrap">
-                    <Button
-                      variant="default"
-                      size="lg"
-                      className="rounded-full font-medium"
-                    >
-                      {slide.buttonText1}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="group cursor-pointer !bg-inherit text-base"
-                    >
-                      {slide.buttonText2}
-                      <ArrowRight className="ms-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Button>
-                  </div>
-                </div>
+        {sliderData.map((slide, index) => {
+          const isCurrent = currentSlide === index;
+          const HeadingTag = index === 0 ? "h1" : "h2";
 
-                {/* Image Section */}
-                <div className="relative flex items-center justify-center flex-1 md:w-72 w-48 h-48 md:h-72 overflow-hidden">
-                  <Image
-                    src={slide.imgSrc}
-                    alt={slide.title}
-                    width={300}
-                    height={300}
-                    priority={index === 0}
-                    loading={index === 0 ? undefined : "lazy"}
-                    fetchPriority={index === 0 ? "high" : "auto"}
-                    sizes="(max-width: 768px) 192px, 288px"
-                    className="object-contain max-w-full max-h-full"
-                  />
+          return (
+            <div
+              key={slide.id}
+              aria-hidden={!isCurrent}
+              inert={!isCurrent}
+              className="w-full flex-shrink-0 py-6"
+            >
+              <div className="wrapper">
+                <div className="flex flex-col-reverse items-center justify-between rounded-xl bg-[#E6E9F2] px-5 py-8 max-md:h-[475px] md:flex-row md:px-14">
+                  <div className="mt-10 max-w-xl md:mt-0 md:pl-8">
+                    <p className="pb-1 text-primary md:text-base">
+                      {slide.offer}
+                    </p>
+                    <HeadingTag className={headingClass}>
+                      {slide.title}
+                    </HeadingTag>
+                    <div className="mt-4 flex flex-wrap items-center gap-4 md:mt-6">
+                      <Button
+                        variant="default"
+                        size="lg"
+                        className="rounded-full font-medium"
+                      >
+                        {slide.buttonText1}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="group cursor-pointer !bg-inherit text-base"
+                      >
+                        {slide.buttonText2}
+                        <ArrowRight
+                          aria-hidden="true"
+                          className="ms-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                        />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="relative flex h-48 w-48 flex-1 items-center justify-center md:justify-end overflow-hidden md:h-72 md:w-72">
+                    <Image
+                      src={slide.imgSrc}
+                      alt={slide.title}
+                      width={300}
+                      height={300}
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 192px, 288px"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Dots */}
-      <div className="flex items-center justify-center gap-2 mt-2">
+      <div className="mt-2 flex items-center justify-center gap-2">
         {sliderData.map((slide, index) => (
           <button
             key={slide.id}
             type="button"
-            onClick={() => handleSlideChange(index)}
+            onClick={() => setCurrentSlide(index)}
             aria-label={`Go to slide ${index + 1}: ${slide.title}`}
             aria-current={currentSlide === index ? "true" : undefined}
             className="flex h-5 w-5 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -123,7 +126,7 @@ const HeaderSlider = () => {
             <span
               className={`block h-2.5 w-2.5 rounded-full transition-all duration-300 ${
                 currentSlide === index
-                  ? "bg-primary scale-125"
+                  ? "scale-125 bg-primary"
                   : "bg-gray-500/40"
               }`}
             />

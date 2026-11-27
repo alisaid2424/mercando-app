@@ -8,46 +8,80 @@ interface PaginationProps {
 }
 
 const Pagination = ({ pages, pageNumber, route }: PaginationProps) => {
-  const pagesArray: number[] = [];
-  for (let i = 1; i <= pages; i++) pagesArray.push(i);
+  if (pages <= 1) return null;
 
+  const pagesArray = Array.from({ length: pages }, (_, i) => i + 1);
   const prev = pageNumber - 1;
   const next = pageNumber + 1;
+  const isPrevDisabled = prev < 1;
+  const isNextDisabled = next > pages;
 
   return (
-    <div className="flex items-center justify-center mt-7 max-w-full gap-3">
-      <Link
-        href={prev >= 1 ? `${route}?pageNumber=${prev}` : "#"}
-        className={`font-light text-primary ${
-          prev < 1 ? "cursor-not-allowed text-gray-400" : ""
-        }`}
-        aria-disabled={prev < 1 ? "true" : "false"}
-      >
-        <ChevronLeft size={35} />
-      </Link>
+    <nav
+      aria-label="Pagination"
+      className="mt-7 flex max-w-full items-center justify-center"
+    >
+      <ul className="flex items-center gap-3">
+        <li>
+          {isPrevDisabled ? (
+            <span
+              aria-disabled="true"
+              aria-label="Previous page"
+              className="inline-flex cursor-not-allowed font-light text-gray-400"
+            >
+              <ChevronLeft size={35} aria-hidden="true" />
+            </span>
+          ) : (
+            <Link
+              href={`${route}?pageNumber=${prev}`}
+              aria-label="Previous page"
+              className="inline-flex rounded font-light text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              <ChevronLeft size={35} aria-hidden="true" />
+            </Link>
+          )}
+        </li>
 
-      {pagesArray.map((page) => (
-        <Link
-          href={`${route}?pageNumber=${page}`}
-          className={`btn-link text-sm  ${
-            pageNumber === page ? "active-btn" : ""
-          }`}
-          key={page}
-        >
-          {page}
-        </Link>
-      ))}
+        {pagesArray.map((page) => {
+          const isCurrent = pageNumber === page;
 
-      <Link
-        href={next <= pages ? `${route}?pageNumber=${next}` : "#"}
-        className={`font-light text-primary ${
-          next > pages ? "cursor-not-allowed text-gray-400" : ""
-        }`}
-        aria-disabled={next > pages ? "true" : "false"}
-      >
-        <ChevronRight size={35} />
-      </Link>
-    </div>
+          return (
+            <li key={page}>
+              <Link
+                href={`${route}?pageNumber=${page}`}
+                aria-label={`Page ${page}`}
+                aria-current={isCurrent ? "page" : undefined}
+                className={`btn-link text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                  isCurrent ? "active-btn" : ""
+                }`}
+              >
+                {page}
+              </Link>
+            </li>
+          );
+        })}
+
+        <li>
+          {isNextDisabled ? (
+            <span
+              aria-disabled="true"
+              aria-label="Next page"
+              className="inline-flex cursor-not-allowed font-light text-gray-400"
+            >
+              <ChevronRight size={35} aria-hidden="true" />
+            </span>
+          ) : (
+            <Link
+              href={`${route}?pageNumber=${next}`}
+              aria-label="Next page"
+              className="inline-flex rounded font-light text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              <ChevronRight size={35} aria-hidden="true" />
+            </Link>
+          )}
+        </li>
+      </ul>
+    </nav>
   );
 };
 

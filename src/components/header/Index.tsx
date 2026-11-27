@@ -1,25 +1,22 @@
-"use client";
-
-import { Pages, Routes } from "@/constants/enums";
-import Link from "next/link";
 import Navbar from "./Navbar";
-import { usePathname } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import { UserRole } from "@prisma/client";
+import Logo from "../Logo";
 
-const Header = () => {
-  const pathName = usePathname();
+const Header = async () => {
+  const { sessionClaims } = await auth();
+  const metadata = sessionClaims?.publicMetadata as
+    | { role?: string }
+    | undefined;
+  const role = metadata?.role;
+  const isAdmin = role === UserRole.ADMIN;
+
   return (
     <header className="border-b border-gray-300 text-gray-700">
-      <div
-        className={`${pathName.startsWith(Routes.ADMIN) || pathName.startsWith(Pages.CONTACT) ? "px-5" : "container max-w-7xl"} flex items-center justify-between py-3 `}
-      >
-        <Link
-          href={Routes.ROOT}
-          className="text-2xl font-extrabold tracking-wide"
-        >
-          <span className="text-primary">M</span>ercando
-        </Link>
+      <div className="wrapper flex items-center justify-between py-3">
+        <Logo />
 
-        <Navbar />
+        <Navbar isAdmin={isAdmin} />
       </div>
     </header>
   );

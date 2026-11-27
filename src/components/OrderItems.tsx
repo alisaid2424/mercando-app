@@ -1,6 +1,5 @@
 import { formatCurrency } from "@/lib/formatters";
 import { OrderWithProduct } from "@/types/product";
-
 import Image from "next/image";
 
 interface OrderItemsWithProduct {
@@ -9,62 +8,81 @@ interface OrderItemsWithProduct {
 
 const OrderItems = ({ order }: OrderItemsWithProduct) => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl text-center text-primary font-bold mb-6 capitalize italic">
+    <section
+      aria-labelledby="order-details-heading"
+      className="mx-auto max-w-4xl px-4 py-8"
+    >
+      <h1
+        id="order-details-heading"
+        className="mb-6 text-center text-2xl font-bold capitalize italic text-primary"
+      >
         Order Details
       </h1>
 
-      <ul className="space-y-6">
+      <ul aria-label="Order items" className="space-y-6">
         {order.products.map((item) => {
+          const itemSubtotal = item.product.offerPrice * item.quantity;
+
           return (
-            <li key={item.id} className="border rounded-lg p-4">
-              <div className="flex gap-6 flex-wrap sm:flex-nowrap">
-                <div className="relative w-24 h-24 mx-auto sm:mx-0 overflow-hidden">
-                  <Image
-                    src={item.product.images[0]}
-                    alt={item.product.name}
-                    fill
-                    className="object-contain w-full h-full rounded-full sm:rounded-lg "
-                  />
-                </div>
+            <li key={item.id}>
+              <article className="rounded-lg border p-4">
+                <div className="flex flex-wrap gap-6 sm:flex-nowrap">
+                  <div className="relative mx-auto h-24 w-24 shrink-0 overflow-hidden sm:mx-0">
+                    <Image
+                      src={item.product.images[0] || "/box_icon.svg"}
+                      alt={item.product.name}
+                      fill
+                      sizes="96px"
+                      className="h-full w-full rounded-full object-contain sm:rounded-lg"
+                    />
+                  </div>
 
-                <div className="flex justify-between items-start w-full">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-lg">
-                      {item.product.name}
-                    </h4>
+                  <div className="flex w-full items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <h2 className="text-lg font-semibold">
+                        {item.product.name}
+                      </h2>
 
-                    <div className="flex items-start justify-between sm:justify-around flex-wrap gap-2 mt-1 text-sm text-gray-600 ">
-                      <div className="space-y-1">
-                        <div>
-                          Unit price : {formatCurrency(item.product.offerPrice)}
+                      <div className="mt-1 flex flex-wrap items-start justify-between gap-2 text-sm text-gray-600 sm:justify-around">
+                        <div className="space-y-1">
+                          <p>
+                            Unit price:{" "}
+                            <span>
+                              {formatCurrency(item.product.offerPrice)}
+                            </span>
+                          </p>
+                          <p>Category: {item.product.category.name}</p>
                         </div>
-                        <div>Category : {item.product.category.name}</div>
-                      </div>
-                      x
-                      <div className="font-medium text-sm">
-                        Quantity: <strong>{item.quantity}</strong>
+
+                        <span aria-hidden="true">×</span>
+
+                        <p className="text-sm font-medium">
+                          Quantity: <strong>{item.quantity}</strong>
+                        </p>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="text-lg font-semibold">
-                    {formatCurrency(item.product?.offerPrice * item.quantity)}
+                    <p
+                      aria-label={`Subtotal for ${item.product.name}`}
+                      className="text-lg font-semibold"
+                    >
+                      {formatCurrency(itemSubtotal)}
+                    </p>
                   </div>
                 </div>
-              </div>
+              </article>
             </li>
           );
         })}
       </ul>
 
-      <div className="mt-10 border-t pt-4 text-right ">
-        <p className="font-medium text-lg">
+      <div className="mt-10 border-t pt-4 text-right">
+        <p className="text-lg font-medium">
           Total:
-          <strong className=" ml-2">{formatCurrency(order.amount)}</strong>
+          <strong className="ml-2">{formatCurrency(order.amount)}</strong>
         </p>
       </div>
-    </div>
+    </section>
   );
 };
 

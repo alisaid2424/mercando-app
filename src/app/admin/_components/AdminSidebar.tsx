@@ -28,30 +28,37 @@ const AdminSidebar = () => {
   };
 
   return (
-    <nav
-      aria-label="Admin navigation"
-      className=" md:w-40 lg:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col"
+    <aside
+      aria-label="Admin sidebar"
+      className="flex w-16 flex-col overflow-hidden border-r border-gray-300 text-base md:w-40 lg:w-64"
     >
-      {tabs.map(({ title, href, icon: Icon }) => {
-        const isActive = isActiveTab(href);
+      <nav aria-label="Admin sections">
+        <ul className="flex flex-col">
+          {tabs.map(({ title, href, icon: Icon }) => {
+            const isActive = isActiveTab(href);
 
-        return (
-          <Link
-            href={`${href}?pageNumber=1`}
-            key={title}
-            aria-current={isActive ? "page" : undefined}
-            className={`flex items-center py-3 px-4 gap-3 transition-all ${
-              isActive
-                ? "border-r-4 md:border-r-[6px] bg-orange-200 border-orange-500/90"
-                : "hover:bg-orange-200 border-white"
-            }`}
-          >
-            <Icon className="w-5 h-5" aria-hidden="true" />
-            <span className="sr-only md:not-sr-only">{title}</span>
-          </Link>
-        );
-      })}
-    </nav>
+            return (
+              <li key={title}>
+                <Link
+                  href={`${href}?pageNumber=1`}
+                  aria-label={title}
+                  title={title}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`flex items-center gap-3 px-4 py-3 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-600 ${
+                    isActive
+                      ? "border-r-4 border-orange-500/90 bg-orange-200 font-medium text-gray-900 md:border-r-[6px]"
+                      : "border-white text-gray-700 hover:bg-orange-200"
+                  }`}
+                >
+                  <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
+                  <span className="sr-only md:not-sr-only">{title}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </aside>
   );
 };
 

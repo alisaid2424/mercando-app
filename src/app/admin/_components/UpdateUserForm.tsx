@@ -96,7 +96,7 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(submitForm)}
-        className="flex flex-col md:flex-row gap-10 items-center md:items-start w-full"
+        className="flex flex-col md:flex-row gap-10 items-center md:items-start w-full py-7"
       >
         <UploadImage<UpdateUserType>
           currentImage={user.image ?? ""}
@@ -107,7 +107,7 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
           readOnly={true}
         />
 
-        <div className="flex flex-col space-y-4 flex-1 w-full">
+        <div className="flex flex-col space-y-2 flex-1 w-full">
           <InputWithLabel<UpdateUserType>
             fieldTitle="Name"
             nameInSchema="name"

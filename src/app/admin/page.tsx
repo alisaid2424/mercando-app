@@ -14,13 +14,11 @@ const AdminPage = async () => {
   if (!user) return notFound();
 
   return (
-    <section className="section-gap lg:w-5/6 mx-auto">
-      <div className="container">
-        <h1 className="text-primary text-center font-bold text-4xl italic my-7">
-          Profile
-        </h1>
-        <UpdateUserForm key={user.id} user={user} />
-      </div>
+    <section className="px-5 lg:w-5/6 mx-auto">
+      <h1 className="text-primary text-center font-bold text-4xl italic">
+        Profile
+      </h1>
+      <UpdateUserForm key={user.id} user={user} />
     </section>
   );
 };

@@ -22,7 +22,7 @@ const ProductImageGallary = ({ productData }: { productData: Product }) => {
   };
 
   return (
-    <div className="sm:px-16 md:px-0 lg:px-20 xl:px-20">
+    <div>
       <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
         <Image
           src={images[currentSlide]}

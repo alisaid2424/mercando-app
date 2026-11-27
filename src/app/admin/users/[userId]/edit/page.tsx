@@ -1,8 +1,5 @@
 import UpdateUserForm from "@/app/admin/_components/UpdateUserForm";
-import { Routes } from "@/constants/enums";
 import { getUser } from "@/server/db/user";
-import { ArrowLeftCircle } from "lucide-react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface EditUserPageProps {
@@ -16,22 +13,12 @@ const EditUserPage = async ({ params }: EditUserPageProps) => {
   if (!user) notFound();
 
   return (
-    <section className="section-gap lg:w-10/12 mx-auto">
-      <div className="container">
-        <Link
-          href={`${Routes.USERS}?pageNumber=1`}
-          className="flex items-center gap-2 mb-20 bg-gray-500 text-white text-base rounded-full w-fit py-2 px-3"
-        >
-          <ArrowLeftCircle size={24} /> Back to Users
-        </Link>
+    <section className="px-5 lg:w-10/12 mx-auto">
+      <h1 className="text-primary text-center font-bold text-4xl italic">
+        Update User
+      </h1>
 
-        <div>
-          <h1 className="text-primary text-center font-bold text-4xl italic mb-7">
-            Update User
-          </h1>
-          <UpdateUserForm key={user.id} user={user} />
-        </div>
-      </div>
+      <UpdateUserForm key={user.id} user={user} />
     </section>
   );
 };

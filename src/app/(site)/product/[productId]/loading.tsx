@@ -1,10 +1,10 @@
 const ProductLoading = () => {
   return (
-    <div className="container max-w-7xl space-y-10 pt-12 animate-pulse">
+    <div className="wrapper space-y-10 pt-12 animate-pulse">
       {/* Top Section: Images + Info */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-16 xl:gap-32">
         {/* Image Gallery Skeleton */}
-        <div className="sm:px-16 md:px-0 lg:px-20 xl:px-20 space-y-4">
+        <div className="space-y-4">
           <div className="bg-gray-300 rounded-lg h-[350px]" />
           <div className="grid grid-cols-4 gap-4">
             {[...Array(4)].map((_, i) => (

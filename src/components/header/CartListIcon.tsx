@@ -97,6 +97,7 @@ const CartListIcon = ({ onSetOpen, cartitems }: Props) => {
 
           <a
             href="#"
+            onClick={() => onSetOpen(false)}
             className="inline-block text-sm text-gray-700 underline underline-offset-4 transition hover:text-gray-600"
           >
             Continue shopping

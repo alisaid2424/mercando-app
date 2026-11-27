@@ -16,7 +16,6 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
   const router = useRouter();
   const { loading, error } = useAppSelector((state) => state.cart);
 
-  //Reusable function to handle adding a product to the cart
   const addProductToCart = async (redirectToCart: boolean = false) => {
     if (!user) {
       openSignIn({
@@ -37,7 +36,6 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
       }),
     );
 
-    // If the request failed, show an error toast
     if (addCartItem.rejected.match(resultAction)) {
       toast({
         className: "bg-red-100 text-red-800 border-red-300",
@@ -49,14 +47,12 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
       return;
     }
 
-    // If successful, show a success toast
     toast({
       className: "bg-green-100 text-green-800 border-green-300",
       title: "Added to cart",
       description: `${product.name} has been added to your cart successfully. 🎉`,
     });
 
-    //If this is a "Buy Now" action, go directly to the cart page
     if (redirectToCart) router.push("/cart");
   };
 
@@ -76,7 +72,9 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
         type="button"
         onClick={() => addProductToCart(false)}
         disabled={loading || product.stock === 0}
-        className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition"
+        aria-busy={loading}
+        aria-label={`Add ${product.name} to cart`}
+        className="w-full py-3.5 bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 transition"
       >
         Add to Cart
       </button>
@@ -85,7 +83,9 @@ const AddToCartButton = ({ product }: { product: productIncloudeCategory }) => {
         type="button"
         onClick={() => addProductToCart(true)}
         disabled={loading || product.stock === 0}
-        className="w-full py-3.5 bg-orange-500 text-white hover:bg-primary transition"
+        aria-busy={loading}
+        aria-label={`Buy ${product.name} now`}
+        className="w-full py-3.5 bg-orange-500 font-medium text-white hover:bg-primary transition"
       >
         Buy now
       </button>

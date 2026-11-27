@@ -1,32 +1,54 @@
 "use client";
 
-import { selectCartItems } from "@/store/cart/cartSlice";
-import { useAppSelector } from "@/store/hook";
+import {
+  clearCart,
+  fetchUserCart,
+  selectCartItems,
+} from "@/store/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hook";
+import { CartItemWithProduct } from "@/types/product";
+import { useAuth } from "@clerk/nextjs";
 import { ShoppingCartIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import CartListIcon from "./CartListIcon";
-import { CartItemWithProduct } from "@/types/product";
 
 const CartButton = () => {
+  const dispatch = useAppDispatch();
+  const { isLoaded, isSignedIn, userId } = useAuth();
   const [isAnimateCart, setIsAnimateCart] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
+
   const cartItems = useAppSelector(selectCartItems) as CartItemWithProduct[];
+
   const quantity = useMemo(
     () => cartItems.reduce((acc, item) => acc + (item.quantity ?? 0), 0),
     [cartItems],
   );
 
   useEffect(() => {
-    if (!quantity) {
+    if (!isLoaded) return;
+
+    if (isSignedIn && userId) {
+      dispatch(fetchUserCart(userId));
+    } else {
+      dispatch(clearCart());
+      setOpenCartList(false);
+    }
+  }, [isLoaded, isSignedIn, userId, dispatch]);
+
+  useEffect(() => {
+    if (quantity <= 0) {
+      setIsAnimateCart(false);
       return;
     }
+
     setIsAnimateCart(true);
 
-    const deponceCart = setTimeout(() => {
+    const debounceCart = setTimeout(() => {
       setIsAnimateCart(false);
     }, 300);
 
-    return () => clearTimeout(deponceCart);
+    return () => clearTimeout(debounceCart);
   }, [quantity]);
 
   return (
@@ -47,7 +69,7 @@ const CartButton = () => {
           <span
             className={`absolute w-6 h-6 -right-5 -top-4 rounded-full bg-primary flex items-center justify-center text-sm text-white ${
               isAnimateCart ? "animate-pumping" : ""
-            } `}
+            }`}
           >
             {quantity}
           </span>

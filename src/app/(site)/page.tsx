@@ -9,7 +9,6 @@ import { Suspense } from "react";
 const HomePage = () => {
   return (
     <>
-      <h1 className="sr-only">Mercando — Online Store</h1>
       <HeaderSlider />
       <Suspense fallback={<ProductSkeleton />}>
         <BestSellers />

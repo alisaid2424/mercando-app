@@ -88,7 +88,7 @@
     @apply my-8 md:my-16;
   }
   .btn-link {
-    @apply border-2 bg-primary text-primary-foreground opacity-50 transition-all duration-300  hover:opacity-100 flex items-center justify-center 
+    @apply border-2 border-white bg-primary text-white opacity-50 transition-all duration-300  hover:opacity-100 flex items-center justify-center 
     w-5 h-5 sm:w-[30px] sm:h-[30px] mx-2 sm:mx-3 rounded-full p-3  
     text-[10px] sm:text-xs;
   }
@@ -99,5 +99,8 @@
   .btnIncrease {
     @apply bg-primary w-6 h-6 text-white rounded-full md:text-xl ring ring-primary ring-offset-2 
     flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .wrapper {
+    @apply px-5 md:px-10 lg:px-20 xl:px-24;
   }
 }

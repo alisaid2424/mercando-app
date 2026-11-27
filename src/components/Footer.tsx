@@ -1,18 +1,17 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Pages, Routes } from "@/constants/enums";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
-    <footer>
-      <div className="flex flex-col md:flex-row justify-center items-center md:items-start  px-6 md:px-16 lg:px-32 gap-10 py-14 border-y border-gray-500/30 text-gray-500">
+    <footer className="bg-white">
+      <div className="wrapper flex flex-col items-center justify-center gap-10 border-y border-gray-500/30 py-14 text-gray-600 md:flex-row md:items-start">
         <div className="w-4/5">
-          <Image
-            className="w-10 mx-auto md:mx-0"
-            width={50}
-            height={50}
-            src="/logo.svg"
-            alt="Mercando"
-          />
-          <p className="mt-6 text-sm text-center md:text-start">
+          <div className="max-md:text-center">
+            <Logo />
+          </div>
+
+          <p className="mt-3 text-center text-sm md:text-start leading-6 lg:leading-7">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry&lsquo;s standard dummy
             text ever since the 1500s, when an unknown printer took a galley of
@@ -20,46 +19,76 @@ const Footer = () => {
           </p>
         </div>
 
-        <div className="w-1/2 flex items-center justify-center text-center md:text-start md:items-start">
+        <nav
+          aria-label="Company links"
+          className="flex w-1/2 items-center justify-center text-center md:items-start md:text-start"
+        >
           <div>
-            <h2 className="font-medium text-gray-900 mb-5">Company</h2>
-            <ul className="text-sm space-y-2">
+            <h2 className="mb-5 font-medium text-gray-900">Company</h2>
+            <ul className="space-y-2 text-sm">
               <li>
-                <a className="hover:underline transition" href="#">
+                <Link
+                  href={Routes.ROOT}
+                  className="rounded transition hover:text-gray-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:underline transition" href="#">
+                <Link
+                  href={Pages.ABOUT}
+                  className="rounded transition hover:text-gray-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
                   About us
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:underline transition" href="#">
+                <Link
+                  href={Pages.CONTACT}
+                  className="rounded transition hover:text-gray-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
                   Contact us
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:underline transition" href="#">
+                <Link
+                  href="/privacy-policy"
+                  className="rounded transition hover:text-gray-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
                   Privacy policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
-        </div>
+        </nav>
 
-        <div className="w-1/2 flex items-center justify-center text-center md:text-start md:items-start">
+        <div className="flex w-1/2 items-center justify-center text-center md:items-start md:text-start">
           <div>
-            <h2 className="font-medium text-gray-900 mb-5">Get in touch</h2>
-            <div className="text-sm space-y-2">
-              <p>+1-154-879-094</p>
-              <p>contact@aliasy.dev</p>
-            </div>
+            <h2 className="mb-5 font-medium text-gray-900">Get in touch</h2>
+            <address className="space-y-2 text-sm not-italic">
+              <p>
+                <a
+                  href="tel:+1154879094"
+                  className="rounded transition hover:text-gray-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  +1-154-879-094
+                </a>
+              </p>
+              <p>
+                <a
+                  href="mailto:contact@aliasy.dev"
+                  className="rounded transition hover:text-gray-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  contact@aliasy.dev
+                </a>
+              </p>
+            </address>
           </div>
         </div>
       </div>
-      <p className="py-4 text-center text-xs md:text-sm">
-        Copyright &copy; {new Date().getFullYear()} My Website. All rights
+
+      <p className="py-4 text-center text-xs text-gray-600 md:text-sm">
+        Copyright &copy; {new Date().getFullYear()} Mercando. All rights
         reserved.
       </p>
     </footer>
